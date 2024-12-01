@@ -12,21 +12,30 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public List<User> getAllUsers() {
+    public List<UserOld> getAllUsers() {
         return userRepository.findAll();
     }
 
-    public User getUserById(Long id) {
+    public UserOld getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    public UserOld getUserById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
-    public User addUser(User user) {
-        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+    public UserOld addUser(UserOld user) {
+        Optional<UserOld> existingUser = userRepository.findByUsername(user.getUsername());
 
         if (existingUser.isPresent()) {
             throw new RuntimeException("User with username " + user.getUsername() + " already exists");
         }
         return userRepository.save(user);
+    }
+
+    public List<UserOld> getUsersByPartialUsername(String partialUsername) {
+        return userRepository.findByUsernameContainingOrderByUsernameAsc(partialUsername);
     }
 }
