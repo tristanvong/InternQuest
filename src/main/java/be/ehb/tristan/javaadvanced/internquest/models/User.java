@@ -37,6 +37,7 @@ public class User {
     @Column(nullable = true)
     private String profilePicturePath;
 
-    @Column(nullable = true)
-    private Long addressId;
+    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "address_id")
+    private Address address;
 }
