@@ -7,35 +7,35 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserServiceOld {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepositoryOld userRepositoryOld;
 
     public List<UserOld> getAllUsers() {
-        return userRepository.findAll();
+        return userRepositoryOld.findAll();
     }
 
     public UserOld getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
+        return userRepositoryOld.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     public UserOld getUserById(Long id) {
-        return userRepository.findById(id)
+        return userRepositoryOld.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
     }
 
     public UserOld addUser(UserOld user) {
-        Optional<UserOld> existingUser = userRepository.findByUsername(user.getUsername());
+        Optional<UserOld> existingUser = userRepositoryOld.findByUsername(user.getUsername());
 
         if (existingUser.isPresent()) {
             throw new RuntimeException("User with username " + user.getUsername() + " already exists");
         }
-        return userRepository.save(user);
+        return userRepositoryOld.save(user);
     }
 
     public List<UserOld> getUsersByPartialUsername(String partialUsername) {
-        return userRepository.findByUsernameContainingOrderByUsernameAsc(partialUsername);
+        return userRepositoryOld.findByUsernameContainingOrderByUsernameAsc(partialUsername);
     }
 }

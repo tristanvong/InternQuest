@@ -22,4 +22,44 @@ public class Company {
 
     @Column(nullable = true)
     private String description;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getNameOfCompany() {
+        return nameOfCompany;
+    }
+
+    public void setNameOfCompany(String nameOfCompany) {
+        this.nameOfCompany = nameOfCompany;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public Enum<Industry> getIndustry() {
+        return industry;
+    }
+
+    public void setIndustry(Enum<Industry> industry) {
+        this.industry = industry;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

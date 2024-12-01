@@ -20,4 +20,36 @@ public class Activity {
 
     @Column(nullable = false)
     private LocalDate activityDeadline;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getActivityName() {
+        return activityName;
+    }
+
+    public void setActivityName(String activityName) {
+        this.activityName = activityName;
+    }
+
+    public LocalDate getActivityStartDate() {
+        return activityStartDate;
+    }
+
+    public void setActivityStartDate(LocalDate activityStartDate) {
+        this.activityStartDate = activityStartDate;
+    }
+
+    public LocalDate getActivityDeadline() {
+        return activityDeadline;
+    }
+
+    public void setActivityDeadline(LocalDate activityDeadline) {
+        this.activityDeadline = activityDeadline;
+    }
 }

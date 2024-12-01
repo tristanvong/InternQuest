@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class UserViewController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceOld userServiceOld;
 
     @PostMapping("/basic/createuser")
 //    public String createUser(@ModelAttribute User user) {
@@ -24,7 +24,7 @@ public class UserViewController {
         if (bindingResult.hasErrors()) {
             return "basicslearning/create-user";
         }
-        userService.addUser(user);
+        userServiceOld.addUser(user);
         return "basicslearning/home";
     }
 

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Create User</title>
+</head>
+<body>
+<h1>Create User</h1>
+<!--TODO: change order of things inside of form, to be more logical -->
+<form th:action="@{/create-user}" th:object="${user}" method="post">
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" th:field="*{username}" required>
+    <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</div>
+    <br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" th:field="*{password}" required>
+    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div>
+    <br>
+
+    <label for="firstName">First Name:</label>
+    <input type="text" id="firstName" name="firstName" th:field="*{firstName}" required>
+    <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</div>
+    <br>
+
+    <label for="lastName">Last Name:</label>
+    <input type="text" id="lastName" name="lastName" th:field="*{lastName}" required>
+    <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error</div>
+    <br>
+
+    <label for="role">Role:</label>
+    <select id="role" name="role" th:field="*{role}" required>
+        <option th:each="role : ${T(be.ehb.tristan.javaadvanced.internquest.enums.Role).values()}"
+                th:value="${role}" th:text="${role}"
+                th:if="${isCreate ? (role != T(be.ehb.tristan.javaadvanced.internquest.enums.Role).ADMINISTRATOR) : true}"></option>
+
+    </select>
+    <div style="color: red" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Error</div>
+    <br>
+
+    <label for="description">Description:</label>
+    <textarea id="description" name="description" th:field="*{description}"></textarea>
+    <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Error</div>
+    <br>
+
+    <fieldset>
+        <legend>Address</legend>
+
+        <label for="address.streetName">Street:</label>
+        <input type="text" id="address.streetName" name="address.streetName" th:field="*{address.streetName}">
+        <div style="color: red" th:if="${#fields.hasErrors('address.streetName')}" th:errors="*{address.streetName}">Error</div>
+        <br>
+
+        <label for="address.houseNumber">House Number:</label>
+        <input type="number" id="address.houseNumber" name="address.houseNumber" th:field="*{address.houseNumber}">
+        <div style="color: red" th:if="${#fields.hasErrors('address.houseNumber')}" th:errors="*{address.houseNumber}">Error</div>
+        <br>
+
+        <label for="address.busNumber">Bus Number (Optional):</label>
+        <input type="number" id="address.busNumber" name="address.busNumber" th:field="*{address.busNumber}">
+        <div style="color: red" th:if="${#fields.hasErrors('address.busNumber')}" th:errors="*{address.busNumber}">Error</div>
+        <br>
+
+        <label for="address.postalCode">Postal Code:</label>
+        <input type="text" id="address.postalCode" name="address.postalCode" th:field="*{address.postalCode}">
+        <div style="color: red" th:if="${#fields.hasErrors('address.postalCode')}" th:errors="*{address.postalCode}">Error</div>
+        <br>
+
+        <label for="address.city">City:</label>
+        <input type="text" id="address.city" name="address.city" th:field="*{address.city}">
+        <div style="color: red" th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}">Error</div>
+        <br>
+
+        <label for="address.country">Country:</label>
+        <input type="text" id="address.country" name="address.country" th:field="*{address.country}">
+        <div style="color: red" th:if="${#fields.hasErrors('address.country')}" th:errors="*{address.country}">Error</div>
+        <br>
+    </fieldset>
+
+    <button type="submit">Create User</button>
+</form>
+</body>
+</html>
