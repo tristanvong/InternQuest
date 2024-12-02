@@ -1,9 +1,8 @@
 package be.ehb.tristan.javaadvanced.internquest.services.user;
 
-import be.ehb.tristan.javaadvanced.internquest.basicsremovelater.UserOld;
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserAlreadyExistsInDatabaseException;
-import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGiven;
-import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGiven;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +23,7 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new UserNotFoundByIdGiven("User not found with the following ID: " + id));
+                .orElseThrow(() -> new UserNotFoundByIdGivenException("User not found with the following ID: " + id));
     }
 
 //    public User getUserByUsername(String username) {
@@ -37,7 +36,7 @@ public class UserService {
 
     public User getUserByUsername(String usn) {
         return userRepository.findByUsername(usn)
-                .orElseThrow(() -> new UserNotFoundByUsernameGiven("User not found with the following username: " + usn));
+                .orElseThrow(() -> new UserNotFoundByUsernameGivenException("User not found with the following username: " + usn));
     }
 
     public User addUser(User user) {

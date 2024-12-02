@@ -1,7 +1,6 @@
 package be.ehb.tristan.javaadvanced.internquest.controllers.user;
 
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserAlreadyExistsInDatabaseException;
-import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGiven;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,7 @@ public class UserRestController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping("old/users")
     public List<User> getAllUsers() {
         return userService.getAllUsers();
     }

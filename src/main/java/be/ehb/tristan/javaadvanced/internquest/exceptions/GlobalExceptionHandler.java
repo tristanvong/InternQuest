@@ -8,8 +8,8 @@ import org.springframework.web.servlet.ModelAndView;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(UserNotFoundByIdGiven.class)
-    public ModelAndView handleUserNotFoundException(UserNotFoundByIdGiven exception, Model model) {
+    @ExceptionHandler(UserNotFoundByIdGivenException.class)
+    public ModelAndView handleUserNotFoundByIdException(UserNotFoundByIdGivenException exception, Model model) {
         ModelAndView mav = new ModelAndView("user/user-not-found");
         mav.addObject("errorMessage", exception.getMessage());
         return mav;
@@ -18,6 +18,13 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UserAlreadyExistsInDatabaseException.class)
     public ModelAndView handleUserAlreadyExistsInDatabaseException(UserAlreadyExistsInDatabaseException exception, Model model) {
         ModelAndView mav = new ModelAndView("user/user-already-exists");
+        mav.addObject("errorMessage", exception.getMessage());
+        return mav;
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ModelAndView handleException(Exception exception, Model model){
+        ModelAndView mav = new ModelAndView("user/general-error");
         mav.addObject("errorMessage", exception.getMessage());
         return mav;
     }
