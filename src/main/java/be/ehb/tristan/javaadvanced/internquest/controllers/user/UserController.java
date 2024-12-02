@@ -1,10 +1,13 @@
 package be.ehb.tristan.javaadvanced.internquest.controllers.user;
 
+import be.ehb.tristan.javaadvanced.internquest.exceptions.FormValueIncorrectException;
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.services.user.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,6 +23,18 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/login")
+    public String login(Model model) {
+        return "user/login-form";
+    }
+
+    @GetMapping("/loggedin")
+    public String loggedIn() {
+        return "user/loggedin";
+    }
 
     @GetMapping("users")
     public String getAllUsers(Model model) {
@@ -36,6 +51,16 @@ public class UserController {
         User user = userService.getUserById(id);
         if (user == null) {
             throw new UserNotFoundByIdGivenException("User with id " + id + " not found");
+        }
+        model.addAttribute("user", user);
+        return "user/user";
+    }
+
+    @GetMapping("new/users/username/{username}")
+    public String getUserByUsername(@PathVariable String username, Model model) {
+        User user = userService.getUserByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundByUsernameGivenException("User with id " + username + " not found");
         }
         model.addAttribute("user", user);
         return "user/user";
@@ -58,9 +83,10 @@ public class UserController {
             return "user/create-user-form";
         }
         if(user.getAddress().getPostalCode() > 9999){
-            throw new RuntimeException("Postal code is too big");
+            throw new FormValueIncorrectException("Postal code is too big");
         }
-        userService.addUser(user);
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        userService.addUser(user, encodedPassword);
         return "basicslearning/home";
     }
 

@@ -6,6 +6,8 @@ import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsername
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,8 +16,13 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = new BCryptPasswordEncoder();
+    }
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -26,35 +33,23 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundByIdGivenException("User not found with the following ID: " + id));
     }
 
-//    public User getUserByUsername(String username) {
-//        User user = userRepository.findByUsername(username);
-//        if (user == null) {
-//            throw new UserNotFoundByUsernameGiven("User not found with the folowing username: " + username);
-//        }
-//        return user;
-//    }
-
-    public User getUserByUsername(String usn) {
-        return userRepository.findByUsername(usn)
-                .orElseThrow(() -> new UserNotFoundByUsernameGivenException("User not found with the following username: " + usn));
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundByUsernameGivenException("User not found with the following username: " + username));
     }
 
-    public User addUser(User user) {
+    public User addUser(User user, String encodedPassword) {
         Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
 
         if (existingUser.isPresent()) {
-            throw new UserAlreadyExistsInDatabaseException("User already exists: " + user.getUsername());
+            throw new UserAlreadyExistsInDatabaseException("User already exists with username: " + user.getUsername());
         }
+
+        user.setPassword(encodedPassword);
         return userRepository.save(user);
     }
 
-//    public UserOld addUser(UserOld user) {
-//        Optional<UserOld> existingUser = userRepositoryOld.findByUsername(user.getUsername());
-//
-//        if (existingUser.isPresent()) {
-//            throw new RuntimeException("User with username " + user.getUsername() + " already exists");
-//        }
-//        return userRepositoryOld.save(user);
-//    }
-
+    public boolean verifyPassword(String rawPassword, String encodedPassword) {
+        return passwordEncoder.matches(rawPassword, encodedPassword);
+    }
 }

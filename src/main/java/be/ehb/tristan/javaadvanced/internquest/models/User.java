@@ -17,7 +17,7 @@ public class User {
     private String username;
 
     @Column(nullable = false)
-    @Size(min = 8, max = 32, message = "Password needs to be between 8 and 32 characters long.")
+    //@Size(min = 8, max = 32, message = "Password needs to be between 8 and 32 characters long.")
     private String password;
 
     @Column(nullable = false)
@@ -58,11 +58,11 @@ public class User {
         this.username = username;
     }
 
-    public @Size(min = 8, max = 32, message = "Password needs to be between 8 and 32 characters long.") String getPassword() {
+    public String getPassword() {
         return password;
     }
 
-    public void setPassword(@Size(min = 8, max = 32, message = "Password needs to be between 8 and 32 characters long.") String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
