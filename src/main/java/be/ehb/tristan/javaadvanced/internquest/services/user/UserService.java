@@ -5,13 +5,9 @@ import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenE
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class UserService {
@@ -32,16 +28,22 @@ public class UserService {
     }
 
     public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundByUsernameGivenException("User not found with the following username: " + username));
+//        return userRepository.findByUsername(username)
+//                .orElseThrow(() -> new UserNotFoundByUsernameGivenException("User not found with the following username: " + username));
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UserNotFoundByUsernameGivenException("User not found with the following username: " + username);
+        }
+        return user;
     }
 
     public User addUser(User user) {
-        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+        User doesUserExist = userRepository.findByUsername(user.getUsername());
 
-        if (existingUser.isPresent()) {
+        if (doesUserExist != null) {
             throw new UserAlreadyExistsInDatabaseException("User already exists with username: " + user.getUsername());
         }
+
         return userRepository.save(user);
     }
 }
