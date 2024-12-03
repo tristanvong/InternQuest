@@ -5,6 +5,8 @@ import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenE
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +14,10 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -43,7 +44,7 @@ public class UserService {
         if (doesUserExist != null) {
             throw new UserAlreadyExistsInDatabaseException("User already exists with username: " + user.getUsername());
         }
-
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 }
