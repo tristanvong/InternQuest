@@ -17,11 +17,9 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.passwordEncoder = new BCryptPasswordEncoder();
     }
 
     public List<User> getAllUsers() {
@@ -38,18 +36,12 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundByUsernameGivenException("User not found with the following username: " + username));
     }
 
-    public User addUser(User user, String encodedPassword) {
+    public User addUser(User user) {
         Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
 
         if (existingUser.isPresent()) {
             throw new UserAlreadyExistsInDatabaseException("User already exists with username: " + user.getUsername());
         }
-
-        user.setPassword(encodedPassword);
         return userRepository.save(user);
-    }
-
-    public boolean verifyPassword(String rawPassword, String encodedPassword) {
-        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }

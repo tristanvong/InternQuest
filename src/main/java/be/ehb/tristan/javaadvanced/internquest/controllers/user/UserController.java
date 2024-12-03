@@ -23,8 +23,6 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -85,8 +83,7 @@ public class UserController {
         if(user.getAddress().getPostalCode() > 9999){
             throw new FormValueIncorrectException("Postal code is too big");
         }
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        userService.addUser(user, encodedPassword);
+        userService.addUser(user);
         return "basicslearning/home";
     }
 
