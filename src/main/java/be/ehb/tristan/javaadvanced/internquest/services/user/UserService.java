@@ -9,6 +9,8 @@ import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
 import be.ehb.tristan.javaadvanced.internquest.services.general.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +28,8 @@ public class UserService {
     @Autowired
     private JWTService jwtService;
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder(12);
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -57,26 +60,26 @@ public class UserService {
         return userRepository.save(user);
     }
 
-//    public String verify(User user) {
-//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
-//
-//        if (authentication.isAuthenticated()){
-//            return jwtService.generateToken(user.getUsername());
-//        }
-//        return "Invalid username or password";//TODO exception voor maken
-//
-//    }
-    public String verify(LoginDTO loginDTO) {
-        User user = userRepository.findByUsername(loginDTO.getUsername());
+    public String verify(User user) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
 
-        if (user == null) {
-            return "Invalid username or password";
-        }
-
-        if (bCryptPasswordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+        if (authentication.isAuthenticated()){
             return jwtService.generateToken(user.getUsername());
-        } else {
-            return "Invalid username or password";
         }
+        return "Invalid username or password";//TODO exception voor maken
+
     }
+//    public String verify(LoginDTO loginDTO) {
+//        User user = userRepository.findByUsername(loginDTO.getUsername());
+//
+//        if (user == null) {
+//            return "Invalid username or password";
+//        }
+//
+//        if (bCryptPasswordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+//            return jwtService.generateToken(user.getUsername());
+//        } else {
+//            return "Invalid username or password";
+//        }
+//    }
 }

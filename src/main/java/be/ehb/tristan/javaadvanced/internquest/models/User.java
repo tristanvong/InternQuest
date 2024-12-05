@@ -3,6 +3,7 @@ package be.ehb.tristan.javaadvanced.internquest.models;
 import be.ehb.tristan.javaadvanced.internquest.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Set;
 
@@ -24,10 +25,12 @@ public class User {
 
     @Column(nullable = false)
     @Size(min = 2, max = 20, message = "First name needs to be between 2 and 20 characters.")
+    @JsonProperty("first_name")
     private String firstName;
 
     @Column(nullable = false)
     @Size(min = 2, max = 20, message = "Last name needs to be between 2 and 20 characters.")
+    @JsonProperty("last_name")
     private String lastName;
 
     @Enumerated(EnumType.STRING)

@@ -11,8 +11,11 @@
     import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
     import org.springframework.security.config.annotation.web.builders.HttpSecurity;
     import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+    import org.springframework.security.config.http.SessionCreationPolicy;
+    import org.springframework.security.core.userdetails.UserDetailsService;
     import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
     import org.springframework.security.web.SecurityFilterChain;
+    import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
     @Configuration
     @EnableWebSecurity
@@ -30,11 +33,20 @@
         @Bean
         public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
             http
-                    .csrf(customizer -> customizer.disable())
-                    .authorizeHttpRequests(request -> request
-                            .requestMatchers("create-user", "login").permitAll()
+                    .csrf(c -> c.disable())
+                    .authorizeHttpRequests(req -> req
+                            .requestMatchers("/api/login", "/api/register").permitAll()
                             .anyRequest().authenticated())
-                    .formLogin(form -> form.loginPage("/login"));
+                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+
+                    //.csrf(customizer -> customizer.disable())
+                    //.authorizeHttpRequests(request -> request
+                            //.requestMatchers("create-user", "login").permitAll()
+                            //.anyRequest().authenticated())
+                    //.formLogin(form -> form.loginPage("/login"));
+
                     //.formLogin(Customizer.withDefaults());
                     //.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
                     //.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
@@ -58,7 +70,7 @@
         @Bean
         public AuthenticationProvider authenticationProvider() {
             DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-            authProvider.setPasswordEncoder(new BCryptPasswordEncoder(12));
+            authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
             authProvider.setUserDetailsService(userDetailsService);
             return authProvider;
         }
@@ -66,5 +78,15 @@
         @Bean
         public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
             return authenticationConfiguration.getAuthenticationManager();
+        }
+
+        @Bean
+        public BCryptPasswordEncoder passwordEncoder() {
+            return new BCryptPasswordEncoder(14);
+        }
+
+        @Bean
+        public UserDetailsService userDetailsService() {
+            return userDetailsService;
         }
     }
