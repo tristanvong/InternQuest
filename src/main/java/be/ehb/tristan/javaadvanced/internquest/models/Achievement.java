@@ -2,6 +2,9 @@ package be.ehb.tristan.javaadvanced.internquest.models;
 
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table
 public class Achievement {
@@ -18,6 +21,17 @@ public class Achievement {
 
     @Column(nullable = false)
     private double rarity;
+
+    @ManyToMany(mappedBy = "achievements")
+    private Set<User> users;
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
     public Long getId() {
         return id;

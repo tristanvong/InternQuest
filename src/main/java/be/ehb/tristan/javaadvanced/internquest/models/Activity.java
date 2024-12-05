@@ -3,6 +3,8 @@ package be.ehb.tristan.javaadvanced.internquest.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table
@@ -20,6 +22,17 @@ public class Activity {
 
     @Column(nullable = false)
     private LocalDate activityDeadline;
+
+    @ManyToMany(mappedBy = "activities")
+    private Set<User> users;
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
+    }
 
     public Long getId() {
         return id;

@@ -4,6 +4,8 @@ import be.ehb.tristan.javaadvanced.internquest.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 
+import java.util.Set;
+
 @Entity
 @Table
 public class User {
@@ -41,6 +43,38 @@ public class User {
     @OneToOne(optional = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address address;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_achievements",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "achievement_id")
+    )
+    private Set<Achievement> achievements;
+
+    @ManyToMany
+    @JoinTable(
+            name = "user_activities",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "activity_id")
+    )
+    private Set<Activity> activities;
+
+    public Set<Achievement> getAchievements() {
+        return achievements;
+    }
+
+    public void setAchievements(Set<Achievement> achievements) {
+        this.achievements = achievements;
+    }
+
+    public Set<Activity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities(Set<Activity> activities) {
+        this.activities = activities;
+    }
 
     public Long getId() {
         return id;
