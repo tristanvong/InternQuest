@@ -35,11 +35,17 @@
             http
                     .csrf(c -> c.disable())
                     .authorizeHttpRequests(req -> req
-                            .requestMatchers("/api/login", "/api/register").permitAll()
+                            .requestMatchers("create-user", "login").permitAll()
                             .anyRequest().authenticated())
-                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
+                    .formLogin(form -> form.loginPage("/login"));
+                    // rest config
+//                    .csrf(c -> c.disable())
+//                    .authorizeHttpRequests(req -> req
+//                            .requestMatchers("/api/login", "/api/register").permitAll()
+//                            .anyRequest().authenticated())
+//                    .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//                    .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                    // ------
 
                     //.csrf(customizer -> customizer.disable())
                     //.authorizeHttpRequests(request -> request
@@ -70,7 +76,7 @@
         @Bean
         public AuthenticationProvider authenticationProvider() {
             DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-            authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
+            authProvider.setPasswordEncoder(passwordEncoder());
             authProvider.setUserDetailsService(userDetailsService);
             return authProvider;
         }
@@ -82,7 +88,7 @@
 
         @Bean
         public BCryptPasswordEncoder passwordEncoder() {
-            return new BCryptPasswordEncoder(14);
+            return new BCryptPasswordEncoder(12);
         }
 
         @Bean

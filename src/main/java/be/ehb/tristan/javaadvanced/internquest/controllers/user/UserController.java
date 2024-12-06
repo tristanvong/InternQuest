@@ -32,21 +32,21 @@
         public String showLoginPage() {
             return "user/login-form";
         }
-        @PostMapping("/login")
-        public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginDTO) {
-            String token = userService.verify(loginDTO);
-
-            if ("Invalid username or password".equals(token)) {
-                Map<String, String> errorResponse = new HashMap<>();
-                errorResponse.put("message", "Invalid credentials");
-                return ResponseEntity.status(401).body(errorResponse);
-            }
-
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-
-            return ResponseEntity.ok(response);
-        }
+//        @PostMapping("/login")
+//        public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginDTO) {
+//            String token = userService.verify(loginDTO);
+//
+//            if ("Invalid username or password".equals(token)) {
+//                Map<String, String> errorResponse = new HashMap<>();
+//                errorResponse.put("message", "Invalid credentials");
+//                return ResponseEntity.status(401).body(errorResponse);
+//            }
+//
+//            Map<String, String> response = new HashMap<>();
+//            response.put("token", token);
+//
+//            return ResponseEntity.ok(response);
+//        }
         @GetMapping("users")
         public String getAllUsers(Model model) {
             List<User> users = userService.getAllUsers();
