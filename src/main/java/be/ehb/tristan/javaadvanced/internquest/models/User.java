@@ -55,7 +55,7 @@ public class User {
     )
     private Set<Achievement> achievements;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_activities",
             joinColumns = @JoinColumn(name = "user_id"),

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Activity Form</title>
+</head>
+<body>
+<form th:action="@{|/activities/create/${userId}|}" method="post" th:object="${activity}">
+    <div>
+        <label for="activityName">Activity name:</label>
+        <input type="text" id="activityName" th:field="*{activityName}" required>
+    </div>
+    <div>
+        <label for="activityStartDate">Start date:</label>
+        <input type="date" id="activityStartDate" th:field="*{activityStartDate}" required>
+    </div>
+    <div>
+        <label for="activityDeadline">Deadline:</label>
+        <input type="date" id="activityDeadline" th:field="*{activityDeadline}" required>
+    </div>
+
+    <button type="submit">Create activity</button>
+</form>
+</body>
+</html>
