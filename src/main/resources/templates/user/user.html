@@ -7,16 +7,16 @@
 <h1>User Details</h1>
 <!-- work in progress -->
 <p th:text="'Username: ' + ${user.username}"></p>
-<p th:text="'First Name: ' + ${user.firstName}"></p>
-<p th:text="'Last Name: ' + ${user.lastName}"></p>
+<p th:text="'First name: ' + ${user.firstName}"></p>
+<p th:text="'Last name: ' + ${user.lastName}"></p>
 <p th:text="'Role: ' + ${user.role}"></p>
 
 <p th:if="${user.description != null and user.description.trim() != ''}" th:text="'Description: ' + ${user.description}" th:id="description"></p>
-<p th:if="${user.profilePicturePath != null}" th:text="'Profile Picture: ' + ${user.profilePicturePath}"></p>
+<p th:if="${user.profilePicturePath != null}" th:text="'Profile picture: ' + ${user.profilePicturePath}"></p>
 <div th:if="${user.address.houseNumber != 0 || user.address.streetName == '' || user.address.city == '' }" th:id="address">
     <p th:text="'Street: ' + ${user.address.streetName}" th:id="streetName"></p>
-    <p th:text="'House Number: ' + ${user.address.houseNumber}" th:id="houseNumber"></p>
-    <p th:text="'Postal Code: ' + ${user.address.postalCode}" th:id="postalCode"></p>
+    <p th:text="'House number: ' + ${user.address.houseNumber}" th:id="houseNumber"></p>
+    <p th:text="'Postal code: ' + ${user.address.postalCode}" th:id="postalCode"></p>
 </div>
 </body>
 </html>

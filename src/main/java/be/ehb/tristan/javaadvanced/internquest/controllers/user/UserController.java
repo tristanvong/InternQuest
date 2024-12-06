@@ -1,26 +1,20 @@
     package be.ehb.tristan.javaadvanced.internquest.controllers.user;
 
-    import be.ehb.tristan.javaadvanced.internquest.dto.LoginDTO;
     import be.ehb.tristan.javaadvanced.internquest.exceptions.FormValueIncorrectException;
     import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenException;
     import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
     import be.ehb.tristan.javaadvanced.internquest.models.User;
-    import be.ehb.tristan.javaadvanced.internquest.services.general.JWTService;
     import be.ehb.tristan.javaadvanced.internquest.services.user.UserService;
     import jakarta.validation.Valid;
     import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.http.ResponseEntity;
     import org.springframework.security.core.Authentication;
     import org.springframework.security.core.context.SecurityContextHolder;
-    import org.springframework.security.core.userdetails.UserDetailsService;
     import org.springframework.stereotype.Controller;
     import org.springframework.ui.Model;
     import org.springframework.validation.BindingResult;
     import org.springframework.web.bind.annotation.*;
 
-    import java.util.HashMap;
     import java.util.List;
-    import java.util.Map;
 
     @Controller
     public class UserController {
@@ -89,7 +83,7 @@
                 throw new FormValueIncorrectException("Postal code is too big");
             }
             userService.addUser(user);
-            return "user/blank-page";
+            return "user/login-form";
         }
         @GetMapping("/test")
         public String test() {

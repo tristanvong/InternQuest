@@ -28,11 +28,7 @@
 
     <label for="role" hidden="hidden">Role:</label>
     <select hidden="hidden" id="role" name="role" th:field="*{role}" required>
-        <option th:each="role : ${T(be.ehb.tristan.javaadvanced.internquest.enums.Role).values()}"
-                th:value="${role}" th:text="${role}"
-                th:if="${isCreate != null ? (isCreate ? role != T(be.ehb.tristan.javaadvanced.internquest.enums.Role).ADMINISTRATOR : true) : true}">
-        </option>
-
+        <option th:value="${T(be.ehb.tristan.javaadvanced.internquest.enums.Role).REGULAR_USER}"></option>
     </select>
     <div style="color: red" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Error</div>
     <br>

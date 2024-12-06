@@ -3,6 +3,9 @@ package be.ehb.tristan.javaadvanced.internquest.models;
 import be.ehb.tristan.javaadvanced.internquest.enums.Industry;
 import jakarta.persistence.*;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
 @Table
 public class Company {
@@ -17,11 +20,15 @@ public class Company {
     @JoinColumn(nullable = false, name = "address_id")
     private Address address;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Enum<Industry> industry;
+    private Industry industry;
 
     @Column(nullable = true)
     private String description;
+
+    @ManyToMany(mappedBy = "companies")
+    private Set<User> users = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -47,12 +54,20 @@ public class Company {
         this.address = address;
     }
 
-    public Enum<Industry> getIndustry() {
+    public Industry getIndustry() {
         return industry;
     }
 
-    public void setIndustry(Enum<Industry> industry) {
+    public void setIndustry(Industry industry) {
         this.industry = industry;
+    }
+
+    public Set<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
 
     public String getDescription() {

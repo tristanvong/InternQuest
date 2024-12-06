@@ -10,20 +10,21 @@
 
 <div th:each="user : ${users}" class="user-card">
     <h2>Username: <span th:text="${user.username}"></span></h2>
-    <p><strong>First Name:</strong> <span th:text="${user.firstName}">First Name</span></p>
-    <p><strong>Last Name:</strong> <span th:text="${user.lastName}">Last Name</span></p>
+    <p><strong>First name:</strong> <span th:text="${user.firstName}">First Name</span></p>
+    <p><strong>Last name:</strong> <span th:text="${user.lastName}">Last Name</span></p>
     <p><strong>Role:</strong> <span th:text="${user.role}">Role</span></p>
     <p><strong>Description:</strong> <span th:text="${user.description}">Description</span></p>
-    <p><strong>Profile Picture:</strong>
+    <p><strong>Profile picture:</strong>
         <img th:src="${user.profilePicturePath}" alt="Profile Picture" style="max-width: 100px; max-height: 100px;">
     </p>
     <h3>Address</h3>
-    <p><strong>Street Name:</strong> <span th:text="${user.address.streetName}">Street Name</span></p>
-    <p><strong>House Number:</strong> <span th:text="${user.address.houseNumber}">House Number</span></p>
-    <p><strong>Bus Number:</strong> <span th:text="${user.address.busNumber}">Bus Number</span></p>
-    <p><strong>Postal Code:</strong> <span th:text="${user.address.postalCode}">Postal Code</span></p>
+    <p><strong>Street name:</strong> <span th:text="${user.address.streetName}">Street Name</span></p>
+    <p><strong>House number:</strong> <span th:text="${user.address.houseNumber}">House Number</span></p>
+    <p><strong>Bus number:</strong> <span th:text="${user.address.busNumber}">Bus Number</span></p>
+    <p><strong>Postal code:</strong> <span th:text="${user.address.postalCode}">Postal Code</span></p>
     <p><strong>City:</strong> <span th:text="${user.address.city}">City</span></p>
     <p><strong>Country:</strong> <span th:text="${user.address.country}">Country</span></p>
+    <hr>
 </div>
 </body>
 </html>

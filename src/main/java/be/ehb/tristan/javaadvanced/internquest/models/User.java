@@ -63,6 +63,22 @@ public class User {
     )
     private Set<Activity> activities;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_companies",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id")
+    )
+    private Set<Company> companies;
+
+    public Set<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(Set<Company> companies) {
+        this.companies = companies;
+    }
+
     public Set<Achievement> getAchievements() {
         return achievements;
     }

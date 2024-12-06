@@ -1,11 +1,12 @@
 package be.ehb.tristan.javaadvanced.internquest.services.user;
 
-import be.ehb.tristan.javaadvanced.internquest.dto.LoginDTO;
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserAlreadyExistsInDatabaseException;
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenException;
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
+import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
+import be.ehb.tristan.javaadvanced.internquest.services.company.CompanyService;
 import be.ehb.tristan.javaadvanced.internquest.services.general.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,6 +31,9 @@ public class UserService {
 
     @Autowired
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Autowired
+    private CompanyService companyService;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -68,6 +72,23 @@ public class UserService {
         }
         return "Invalid username or password";//TODO exception voor maken
 
+    }
+
+    public void addCompanyToUser(Long userId, Long companyId) {
+        User user = getUserById(userId);
+        Company company = companyService.getCompanyById(companyId);
+        if(user == null) {
+            throw new UserNotFoundByIdGivenException("User not found with the following ID: " + userId);
+        }
+        if(company == null) {
+            throw new UserNotFoundByIdGivenException("Company not found with the following ID: " + companyId);
+        }
+        user.getCompanies().add(company);
+        userRepository.save(user);
+    }
+
+    public void updateUser(User user){
+        userRepository.save(user);
     }
 //    public String verify(LoginDTO loginDTO) {
 //        User user = userRepository.findByUsername(loginDTO.getUsername());
