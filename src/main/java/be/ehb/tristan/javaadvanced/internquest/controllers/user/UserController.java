@@ -1,5 +1,6 @@
     package be.ehb.tristan.javaadvanced.internquest.controllers.user;
 
+    import be.ehb.tristan.javaadvanced.internquest.enums.Role;
     import be.ehb.tristan.javaadvanced.internquest.exceptions.FormValueIncorrectException;
     import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenException;
     import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
@@ -96,5 +97,36 @@
             String username = authentication.getName();
             model.addAttribute("username", username);
             return "user/information";
+        }
+
+        @GetMapping("/account")
+        public String showAccountEditPage(Model model, Authentication authentication) {
+            String username = authentication.getName();
+            User user = userService.getUserByUsername(username);
+
+            if(user == null) {
+                throw new RuntimeException("User not found");
+            }
+
+            model.addAttribute("user", user);
+            return "user/account-edit-form";
+        }
+        @PostMapping("/account")
+        public String updateAccountInformation(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Model model, Authentication authentication) {
+            if(bindingResult.hasErrors()) {
+                return "user/account-edit-form";
+            }
+
+            String username = authentication.getName();
+            User userUsingURL = userService.getUserByUsername(username);
+            if(userUsingURL == null){
+                throw new RuntimeException("User not found");
+            }
+
+            user.setId(userUsingURL.getId());
+            user.setRole(Role.REGULAR_USER);
+            userService.editUser(user);
+
+            return "redirect:/info";
         }
 }

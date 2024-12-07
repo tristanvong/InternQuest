@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User's Companies</title>
+</head>
+<body>
+    <h1>Companies for user with ID: <span th:text="${userId}">User ID</span></h1>
+    <ul>
+        <li th:each="company : ${companies}">
+            <span th:text="${company.nameOfCompany}">Company name</span> -
+            <span th:text="${company.industry}">Industry</span>
+            <a th:href="@{|/companies/edit/${company.id}|}">Update</a>
+        </li>
+    </ul>
+</body>
+</html>

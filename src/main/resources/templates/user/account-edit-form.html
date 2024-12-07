@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Account Information</title>
+</head>
+<body>
+    <h1>Edit Account Information</h1>
+    <form th:action="@{/account}" th:object="${user}" method="post">
+
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" th:field="*{username}" readonly>
+        <br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" th:field="*{password}" required>
+        <br>
+
+        <label for="firstName">First name:</label>
+        <input type="text" id="firstName" name="firstName" th:field="*{firstName}" required>
+        <br>
+
+        <label for="lastName">Last name:</label>
+        <input type="text" id="lastName" name="lastName" th:field="*{lastName}" required>
+        <br>
+
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" cols="30" rows="10" th:field="*{description}"></textarea>
+        <br>
+
+        <label for="role" hidden="hidden">Role:</label>
+        <select hidden="hidden" id="role" name="role" th:field="*{role}" required>
+            <option th:value="${T(be.ehb.tristan.javaadvanced.internquest.enums.Role).REGULAR_USER}"></option>
+        </select>
+        <br>
+
+        <fieldset>
+            <legend>Address:</legend>
+
+            <label for="address.streetName">Street name:</label>
+            <input type="text" id="address.streetName" name="address.streetName" th:field="*{address.streetName}" required>
+            <br>
+
+            <label for="address.houseNumber">House number:</label>
+            <input type="number" id="address.houseNumber" name="address.houseNumber" th:field="*{address.houseNumber}" required>
+            <br>
+
+            <label for="address.postalCode">Postal Code:</label>
+            <input type="number" id="address.postalCode" name="address.postalCode" th:field="*{address.postalCode}">
+            <br>
+
+            <label for="address.city">City:</label>
+            <input type="text" id="address.city" name="address.city" th:field="*{address.city}">
+            <br>
+
+            <label for="address.country">Country:</label>
+            <input type="text" id="address.country" name="address.country" th:field="*{address.country}">
+            <br>
+        </fieldset>
+        <button type="submit">Save changes</button>
+    </form>
+</body>
+</html>

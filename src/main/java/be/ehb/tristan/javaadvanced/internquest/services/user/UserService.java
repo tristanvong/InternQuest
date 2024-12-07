@@ -1,5 +1,6 @@
 package be.ehb.tristan.javaadvanced.internquest.services.user;
 
+import be.ehb.tristan.javaadvanced.internquest.enums.Role;
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserAlreadyExistsInDatabaseException;
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenException;
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
@@ -89,6 +90,21 @@ public class UserService {
 
     public void updateUser(User user){
         userRepository.save(user);
+    }
+
+    public void editUser(User user){
+        User existingUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("User not found with the following ID: " + user.getId()));
+
+        String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
+        existingUser.setFirstName(user.getFirstName());
+        existingUser.setLastName(user.getLastName());
+        existingUser.setDescription(user.getDescription());
+        existingUser.setAddress(user.getAddress());
+        existingUser.setPassword(encryptedPassword);
+        existingUser.setRole(Role.REGULAR_USER);
+
+        userRepository.save(existingUser);
     }
 //    public String verify(LoginDTO loginDTO) {
 //        User user = userRepository.findByUsername(loginDTO.getUsername());
