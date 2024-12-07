@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Activity Form</title>
+</head>
+<body>
+    <h1>Update Activity:</h1>
+    <form th:action="@{|/activities/update/${userId}|}" method="post">
+        <input type="hidden" name="activityId" th:value="${activity.id}"/>
+
+        <div>
+            <label for="activityName">Activity name:</label>
+            <input type="text" id="activityName" name="activityName" th:value="${activity.activityName}"/>
+        </div>
+
+        <div>
+            <label for="updatedStatus">Activity description/status:</label>
+            <input type="text" id="updatedStatus" name="updatedStatus" th:value="${activity.activityDescription}"/>
+        </div>
+
+        <button type="submit">Update Activity</button>
+    </form>
+</body>
+</html>

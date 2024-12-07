@@ -18,16 +18,43 @@ public class Activity {
     private String activityName;
 
     @Column(nullable = false)
+    private String activityDescription;
+
+    @Column(nullable = false)
     private LocalDate activityStartDate;
 
     @Column(nullable = false)
     private LocalDate activityDeadline;
 
-    @ManyToMany(mappedBy = "activities")
+    @ManyToMany(mappedBy = "activities", fetch = FetchType.EAGER)
     private Set<User> users;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "activity_companies",
+            joinColumns = @JoinColumn(name = "activity_id"),
+            inverseJoinColumns = @JoinColumn(name = "company_id")
+    )
+    private Set<Company> companies = new HashSet<>();
+
+    public Set<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(Set<Company> companies) {
+        this.companies = companies;
+    }
 
     public Set<User> getUsers() {
         return users;
+    }
+
+    public String getActivityDescription() {
+        return activityDescription;
+    }
+
+    public void setActivityDescription(String activityDescription) {
+        this.activityDescription = activityDescription;
     }
 
     public void setUsers(Set<User> users) {
