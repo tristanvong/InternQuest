@@ -1,4 +1,4 @@
-package be.ehb.tristan.javaadvanced.internquest.services.general;
+package be.ehb.tristan.javaadvanced.internquest.services;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

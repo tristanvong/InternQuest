@@ -1,8 +1,8 @@
 package be.ehb.tristan.javaadvanced.internquest.models;
 
+import be.ehb.tristan.javaadvanced.internquest.enums.Rarity;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,10 +19,11 @@ public class Achievement {
     @Column(nullable = false)
     private String description;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private double rarity;
+    private Rarity rarity;
 
-    @ManyToMany(mappedBy = "achievements")
+    @ManyToMany(mappedBy = "achievements", fetch = FetchType.EAGER)
     private Set<User> users;
 
     public Set<User> getUsers() {
@@ -57,11 +58,11 @@ public class Achievement {
         this.description = description;
     }
 
-    public double getRarity() {
+    public Rarity getRarity() {
         return rarity;
     }
 
-    public void setRarity(double rarity) {
+    public void setRarity(Rarity rarity) {
         this.rarity = rarity;
     }
 }

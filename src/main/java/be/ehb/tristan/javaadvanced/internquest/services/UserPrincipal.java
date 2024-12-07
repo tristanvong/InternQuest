@@ -1,4 +1,4 @@
-package be.ehb.tristan.javaadvanced.internquest.services.general;
+package be.ehb.tristan.javaadvanced.internquest.services;
 
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import org.springframework.security.core.GrantedAuthority;

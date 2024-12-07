@@ -47,7 +47,7 @@ public class User {
     @JoinColumn(name = "address_id")
     private Address address;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_achievements",
             joinColumns = @JoinColumn(name = "user_id"),

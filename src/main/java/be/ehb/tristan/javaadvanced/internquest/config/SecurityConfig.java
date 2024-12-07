@@ -1,7 +1,7 @@
     package be.ehb.tristan.javaadvanced.internquest.config;
 
     import be.ehb.tristan.javaadvanced.internquest.filter.JwtFilter;
-    import be.ehb.tristan.javaadvanced.internquest.services.general.CustomUserDetailsService;
+    import be.ehb.tristan.javaadvanced.internquest.services.CustomUserDetailsService;
     import org.springframework.beans.factory.annotation.Autowired;
     import org.springframework.context.annotation.Bean;
     import org.springframework.context.annotation.Configuration;

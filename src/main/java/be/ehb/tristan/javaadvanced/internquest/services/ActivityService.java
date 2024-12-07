@@ -1,4 +1,4 @@
-package be.ehb.tristan.javaadvanced.internquest.services.activity;
+package be.ehb.tristan.javaadvanced.internquest.services;
 
 import be.ehb.tristan.javaadvanced.internquest.models.Activity;
 import be.ehb.tristan.javaadvanced.internquest.repositories.user.ActivityRepository;

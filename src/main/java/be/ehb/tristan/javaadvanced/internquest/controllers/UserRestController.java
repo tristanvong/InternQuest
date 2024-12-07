@@ -4,8 +4,8 @@
 //import be.ehb.tristan.javaadvanced.internquest.dto.RegisterDTO;
 //import be.ehb.tristan.javaadvanced.internquest.enums.Role;
 //import be.ehb.tristan.javaadvanced.internquest.models.User;
-//import be.ehb.tristan.javaadvanced.internquest.services.general.JWTService;
-//import be.ehb.tristan.javaadvanced.internquest.services.user.UserService;
+//import be.ehb.tristan.javaadvanced.internquest.services.JWTService;
+//import be.ehb.tristan.javaadvanced.internquest.services.UserService;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.http.HttpStatus;
 //import org.springframework.http.ResponseEntity;

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List of user's achievements</title>
+</head>
+<body>
+    <h1>Your achievements:</h1>
+    <ul>
+        <li th:each="achievement : ${achievements}">
+            <span th:text="${achievement.name}">Achievement name</span>
+            <span th:text="${achievement.description}">Achievement description</span>
+            <span th:text="${achievement.rarity}">Achievement rarity</span>
+        </li>
+    </ul>
+</body>
+</html>

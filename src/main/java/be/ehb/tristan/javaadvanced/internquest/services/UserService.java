@@ -1,4 +1,4 @@
-package be.ehb.tristan.javaadvanced.internquest.services.user;
+package be.ehb.tristan.javaadvanced.internquest.services;
 
 import be.ehb.tristan.javaadvanced.internquest.enums.Role;
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserAlreadyExistsInDatabaseException;
@@ -7,8 +7,6 @@ import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsername
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
-import be.ehb.tristan.javaadvanced.internquest.services.company.CompanyService;
-import be.ehb.tristan.javaadvanced.internquest.services.general.JWTService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

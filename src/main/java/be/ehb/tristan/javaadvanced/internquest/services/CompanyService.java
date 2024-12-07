@@ -1,4 +1,4 @@
-package be.ehb.tristan.javaadvanced.internquest.services.company;
+package be.ehb.tristan.javaadvanced.internquest.services;
 
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.repositories.user.CompanyRepository;

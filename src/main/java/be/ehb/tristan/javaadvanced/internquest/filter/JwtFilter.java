@@ -1,7 +1,7 @@
 package be.ehb.tristan.javaadvanced.internquest.filter;
 
-import be.ehb.tristan.javaadvanced.internquest.services.general.CustomUserDetailsService;
-import be.ehb.tristan.javaadvanced.internquest.services.general.JWTService;
+import be.ehb.tristan.javaadvanced.internquest.services.CustomUserDetailsService;
+import be.ehb.tristan.javaadvanced.internquest.services.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

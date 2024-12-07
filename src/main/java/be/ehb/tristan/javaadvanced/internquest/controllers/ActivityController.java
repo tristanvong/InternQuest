@@ -1,11 +1,11 @@
-package be.ehb.tristan.javaadvanced.internquest.controllers.activity;
+package be.ehb.tristan.javaadvanced.internquest.controllers;
 
 import be.ehb.tristan.javaadvanced.internquest.models.Activity;
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
-import be.ehb.tristan.javaadvanced.internquest.services.activity.ActivityService;
-import be.ehb.tristan.javaadvanced.internquest.services.company.CompanyService;
-import be.ehb.tristan.javaadvanced.internquest.services.user.UserService;
+import be.ehb.tristan.javaadvanced.internquest.services.ActivityService;
+import be.ehb.tristan.javaadvanced.internquest.services.CompanyService;
+import be.ehb.tristan.javaadvanced.internquest.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
