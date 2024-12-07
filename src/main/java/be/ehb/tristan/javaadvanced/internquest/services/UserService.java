@@ -6,6 +6,9 @@ import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenE
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
+import be.ehb.tristan.javaadvanced.internquest.repositories.user.AchievementRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.user.ActivityRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.user.CompanyRepository;
 import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,14 +16,25 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ActivityRepository activityRepository;
+
+    @Autowired
+    private AchievementRepository achievementRepository;
+
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -33,6 +47,8 @@ public class UserService {
 
     @Autowired
     private CompanyService companyService;
+
+
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -103,6 +119,40 @@ public class UserService {
         existingUser.setRole(Role.REGULAR_USER);
 
         userRepository.save(existingUser);
+    }
+
+    @Transactional
+    public void deleteUser(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found with the following ID: " + userId));
+
+        user.getCompanies().forEach(company -> {
+            company.getUsers().remove(user);
+            companyRepository.save(company);
+        });
+
+        companyRepository.flush();
+
+        user.getAchievements().forEach(achievement -> {
+            achievement.getUsers().remove(user);
+            achievementRepository.save(achievement);
+        });
+
+        user.getActivities().forEach(activity -> {
+            activity.getUsers().remove(user);
+            activityRepository.save(activity);
+        });
+
+        achievementRepository.flush();
+        activityRepository.flush();
+
+        userRepository.delete(user);
+
+        user.getCompanies().forEach(company -> {
+            if (company.getUsers().isEmpty()) {
+                companyRepository.delete(company);
+            }
+        });
     }
 //    public String verify(LoginDTO loginDTO) {
 //        User user = userRepository.findByUsername(loginDTO.getUsername());
