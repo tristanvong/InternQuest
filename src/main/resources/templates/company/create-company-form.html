@@ -1,42 +1,57 @@
-<form th:action="@{|/companies/create/${userId}|}" method="post" th:object="${company}">
-  <div>
-    <label for="nameOfCompany">Company Name:</label>
-    <input type="text" id="nameOfCompany" th:field="*{nameOfCompany}" required>
-  </div>
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Create A Company</title>
+</head>
+<body>
+  <form th:action="@{|/companies/create/${userId}|}" method="post" th:object="${company}">
+    <div>
+      <label for="nameOfCompany">Company Name:</label>
+      <input type="text" id="nameOfCompany" th:field="*{nameOfCompany}" required>
+    </div>
 
-  <h3>Address</h3>
-  <div>
-    <label for="street">Street:</label>
-    <input type="text" id="street" th:field="*{address.streetName}" required>
-  </div>
-  <div>
-    <label for="houseNumber">House Number:</label>
-    <input type="number" id="houseNumber" th:field="*{address.houseNumber}" required>
-  </div>
-  <div>
-    <label for="busNumber">Bus Number (optional):</label>
-    <input type="number" id="busNumber" th:field="*{address.busNumber}">
-  </div>
-  <div>
-    <label for="city">City:</label>
-    <input type="text" id="city" th:field="*{address.city}" required>
-  </div>
-  <div>
-    <label for="postalCode">Postal Code:</label>
-    <input type="text" id="postalCode" th:field="*{address.postalCode}" required>
-  </div>
-  <div>
-    <label for="country">Country:</label>
-    <input type="text" id="country" th:field="*{address.country}" required>
-  </div>
+    <h3>Address</h3>
+    <div>
+      <label for="street">Street:</label>
+      <input type="text" id="street" th:field="*{address.streetName}" required>
+    </div>
+    <div>
+      <label for="houseNumber">House Number:</label>
+      <input type="number" id="houseNumber" th:field="*{address.houseNumber}" required>
+    </div>
+    <div>
+      <label for="busNumber">Bus Number (optional):</label>
+      <input type="number" id="busNumber" th:field="*{address.busNumber}">
+    </div>
+    <div>
+      <label for="city">City:</label>
+      <input type="text" id="city" th:field="*{address.city}" required>
+    </div>
+    <div>
+      <label for="postalCode">Postal Code:</label>
+      <input type="number" id="postalCode" th:field="*{address.postalCode}" required>
+    </div>
+    <div>
+      <label for="country">Country:</label>
+      <input type="text" id="country" th:field="*{address.country}" required>
+    </div>
 
-  <div>
-    <label for="industry">Industry:</label>
-    <select id="industry" th:field="*{industry}">
-      <option value="" disabled selected>Select Industry</option>
-      <option th:each="industry : ${industries}" th:value="${industry}" th:text="${industry}"></option>
-    </select>
-  </div>
+    <div>
+      <label for="industry">Industry:</label>
+      <select id="industry" th:field="*{industry}">
+        <option value="" disabled selected>Select Industry</option>
+        <option th:each="industry : ${industries}" th:value="${industry}" th:text="${industry}"></option>
+      </select>
+    </div>
 
-  <button type="submit">Create Company</button>
-</form>
+    <div>
+      <label for="description">Description:</label>
+      <textarea id="description" th:field="*{description}" rows="4" cols="50" placeholder="Enter description of company (optional)"></textarea>
+    </div>
+
+    <button type="submit">Create Company</button>
+  </form>
+</body>
+</html>

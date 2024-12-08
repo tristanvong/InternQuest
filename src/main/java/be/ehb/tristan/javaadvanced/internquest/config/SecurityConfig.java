@@ -33,11 +33,11 @@
             http
                     .csrf(c -> c.disable())
                     .authorizeHttpRequests(req -> req
-                            .requestMatchers("create-user", "login").permitAll()
+                            .requestMatchers("/user/create-user", "/user/login").permitAll()
                             .anyRequest().authenticated())
                     .formLogin(form -> form
-                            .loginPage("/login")
-                            .defaultSuccessUrl("/info"));
+                            .loginPage("/user/login")
+                            .defaultSuccessUrl("/user/info"));
                     // rest config
 //                    .csrf(c -> c.disable())
 //                    .authorizeHttpRequests(req -> req

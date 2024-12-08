@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Edit Account Information</h1>
-    <form th:action="@{/account}" th:object="${user}" method="post">
+    <form th:action="@{/user/edit-account}" th:object="${user}" method="post">
 
         <label for="username">Username:</label>
         <input type="text" id="username" name="username" th:field="*{username}" readonly>
@@ -35,14 +35,14 @@
         <br>
 
         <fieldset>
-            <legend>Address:</legend>
+            <legend>Address: (optional)</legend>
 
             <label for="address.streetName">Street name:</label>
-            <input type="text" id="address.streetName" name="address.streetName" th:field="*{address.streetName}" required>
+            <input type="text" id="address.streetName" name="address.streetName" th:field="*{address.streetName}">
             <br>
 
             <label for="address.houseNumber">House number:</label>
-            <input type="number" id="address.houseNumber" name="address.houseNumber" th:field="*{address.houseNumber}" required>
+            <input type="number" id="address.houseNumber" name="address.houseNumber" th:field="*{address.houseNumber}">
             <br>
 
             <label for="address.postalCode">Postal Code:</label>

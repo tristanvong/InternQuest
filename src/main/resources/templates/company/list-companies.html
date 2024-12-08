@@ -11,6 +11,7 @@
             <span th:text="${company.nameOfCompany}">Company name</span> -
             <span th:text="${company.industry}">Industry</span>
             <a th:href="@{|/companies/edit/${company.id}|}">Update</a>
+            <a th:href="@{|/companies/delete/${company.id}|}">Delete</a>
         </li>
     </ul>
 </body>

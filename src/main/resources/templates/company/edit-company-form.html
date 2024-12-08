@@ -34,7 +34,7 @@
 
         <div>
             <label for="postalCode">Postal code:</label>
-            <input type="text" id="postalCode" th:field="*{address.postalCode}" required>
+            <input type="number" id="postalCode" th:field="*{address.postalCode}" required>
         </div>
 
         <div>
@@ -48,6 +48,11 @@
                 <option value="" disabled>Select industry</option>
                 <option th:each="industry : ${industries}" th:value="${industry}" th:text="${industry}" th:selected="${industry == company.industry}"></option>
             </select>
+        </div>
+
+        <div>
+            <label for="description">Description:</label>
+            <textarea id="description" th:field="*{description}" rows="4" cols="50" placeholder="Enter description of company (optional)"></textarea>
         </div>
 
         <button type="submit">Update company information</button>

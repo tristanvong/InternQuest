@@ -28,25 +28,20 @@ public class ActivityController {
     @Autowired
     private CompanyService companyService;
 
-    @GetMapping("/create/{userId}")
-    public String showAssignActivityForm(@PathVariable Long userId, Model model, Authentication authentication) {
+    @GetMapping("/create")
+    public String showAssignActivityForm(Model model, Authentication authentication) {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
-        if(userUsingURL == null || !userUsingURL.getId().equals(userId)) {
-            throw new RuntimeException("User with id: " + userId + " not authorized to use this page.");
+        if(userUsingURL == null) {
+            throw new RuntimeException("You are not authorized to use this page.");
         }
 
-        User user = userService.getUserById(userId);
-        if(user == null) {
-            throw new RuntimeException("User with id: " + userId + " not found");
-        }
-
-        Set<Company> availableCompanies = user.getCompanies()
+        Set<Company> availableCompanies = userUsingURL.getCompanies()
                 .stream()
                 .filter(company -> company.getActivities() == null || company.getActivities().isEmpty())
                 .collect(Collectors.toSet());
 
-        model.addAttribute("userId", userId);
+        model.addAttribute("userId", userUsingURL.getId());
         model.addAttribute("activity", new Activity());
         model.addAttribute("userCompanies", availableCompanies);
         return "activity/create-activity-form";
@@ -92,7 +87,7 @@ public class ActivityController {
         activityService.saveActivity(activity);
 
         model.addAttribute("user", user);
-        return "redirect:/info";
+        return "redirect:/user/info";
     }
 
     @GetMapping("/update/{userId}")
@@ -152,21 +147,17 @@ public class ActivityController {
 
         activityService.saveActivity(activity);
         model.addAttribute("user", user);
-        return "redirect:/info";
+        return "redirect:/user/info";
     }
 
-    @GetMapping("/list/{userId}")
-    public String listUserActivities(@PathVariable Long userId, Model model, Authentication authentication) {
+    @GetMapping("/list")
+    public String listUserActivities(Model model, Authentication authentication) {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
-        if(userUsingURL == null || !userUsingURL.getId().equals(userId)) {
-            throw new RuntimeException("User with id: " + userId + " is not authorized to access this page.");
+        if(userUsingURL == null) {
+            throw new RuntimeException("You are not authorized to access this page.");
         }
-        User user = userService.getUserById(userId);
-        if(user == null) {
-            throw new RuntimeException("User with id: " + userId + " not found");
-        }
-        model.addAttribute("activities", user.getActivities());
+        model.addAttribute("activities", userUsingURL.getActivities());
         return "activity/list-activities";
     }
 }

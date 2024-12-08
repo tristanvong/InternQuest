@@ -23,19 +23,14 @@ public class CompanyController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/create/{userId}")
-    public String createCompanyForm(@PathVariable Long userId, Model model, Authentication authentication) {
+    @GetMapping("/create")
+    public String createCompanyForm(Model model, Authentication authentication) {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
-        if (userUsingURL == null || !userUsingURL.getId().equals(userId)) {
+        if (userUsingURL == null) {
             throw new RuntimeException("You are not authorized to access this page.");
         }
-        User user = userService.getUserById(userId);
-
-        if (user == null) {
-            throw new IllegalArgumentException("User with id " + userId + " not found");
-        }
-        model.addAttribute("userId", userId);
+        model.addAttribute("userId", userUsingURL.getId());
         model.addAttribute("company", new Company());
         model.addAttribute("industries", Industry.values());
         return "company/create-company-form";
@@ -54,28 +49,10 @@ public class CompanyController {
             throw new IllegalArgumentException("User with id " + userId + " not found");
         }
 
-        if (company.getAddress() == null || company.getAddress().getStreetName() == null || company.getAddress().getCity() == null) {
-            throw new IllegalArgumentException("Address or street name or city not found");
-        }
-
-        company.setIndustry(industry);
-
-        if (user.getCompanies() == null) {
-            user.setCompanies(new HashSet<>());
-        }
-
-        user.getCompanies().add(company);
-
-        if (company.getUsers() == null) {
-            company.setUsers(new HashSet<>());
-        }
-
-        company.getUsers().add(user);
-
-        companyService.saveCompany(company);
+        companyService.validateCompanyInformation(company, industry, user);
         userService.updateUser(user);
         model.addAttribute("user", user);
-        return "redirect:/info";
+        return "redirect:/user/info";
     }
 
     @GetMapping("/edit/{companyId}")
@@ -107,41 +84,40 @@ public class CompanyController {
             throw new RuntimeException("You are not authorized to access this page.");
         }
 
-        /*
-        todo: validation that users give valid address
-        for example houseNumber cant be negative etc.
-         */
-
-        company.setNameOfCompany(changedCompany.getNameOfCompany());
-        company.setIndustry(industry);
-        company.setDescription(changedCompany.getDescription());
-        company.getAddress().setStreetName(changedCompany.getAddress().getStreetName());
-        company.getAddress().setHouseNumber(changedCompany.getAddress().getHouseNumber());
-        company.getAddress().setBusNumber(changedCompany.getAddress().getBusNumber());
-        company.getAddress().setCity(changedCompany.getAddress().getCity());
-        company.getAddress().setPostalCode(changedCompany.getAddress().getPostalCode());
-        company.getAddress().setCountry(changedCompany.getAddress().getCountry());
-
-        companyService.saveCompany(company);
-
-        return "redirect:/info";
+        companyService.validateCompanyInformation(changedCompany, company, industry);
+        return "redirect:/user/info";
     }
 
-    @GetMapping("/list/{userId}")
-    public String listUserCompanies(@PathVariable Long userId, Model model, Authentication authentication) {
-        User user = userService.getUserById(userId);
-        if (user == null) {
-            throw new IllegalArgumentException("User with id " + userId + " not found");
+    @GetMapping("/list")
+    public String listUserCompanies(Model model, Authentication authentication) {
+        String username = authentication.getName();
+        User userUsingURL = userService.getUserByUsername(username);
+        if (userUsingURL == null) {
+            throw new RuntimeException("You are not authorized to access this page.");
+        }
+        Long userId = userUsingURL.getId();
+
+        model.addAttribute("userId", userId);
+        model.addAttribute("companies", userUsingURL.getCompanies());
+        return "company/list-companies";
+    }
+
+    @GetMapping("/delete/{companyId}")
+    public String deleteCompany(@PathVariable Long companyId, Authentication authentication) {
+        Company company = companyService.getCompanyById(companyId);
+        if(company == null) {
+            throw new RuntimeException("Company with id " + companyId + " not found");
         }
 
         String username = authentication.getName();
-        User userUsingURL = userService.getUserByUsername(username);
-        if (userUsingURL == null || !userUsingURL.getId().equals(userId)) {
-            throw new RuntimeException("You are not authorized to access this page.");
+        boolean userIsAuthorizeToDeleteCompany = company.getUsers().stream()
+                .anyMatch(user -> user.getUsername().equals(username));
+
+        if(!userIsAuthorizeToDeleteCompany) {
+            throw new RuntimeException("You are not authorized to perform this action.");
         }
 
-        model.addAttribute("userId", userId);
-        model.addAttribute("companies", user.getCompanies());
-        return "company/list-companies";
+        companyService.deleteCompanyById(companyId);
+        return "redirect:/user/info";
     }
 }
