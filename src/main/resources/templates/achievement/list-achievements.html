@@ -8,6 +8,7 @@
     <h1>Your achievements:</h1>
     <ul>
         <li th:each="achievement : ${achievements}">
+            <img th:src="@{/images/{path}(path=${achievement.pathToImage})}" alt="Achievement Picture" width="100px" height="100px">
             <span th:text="${achievement.name}">Achievement name</span>
             <span th:text="${achievement.description}">Achievement description</span>
             <span th:text="${achievement.rarity}">Achievement rarity</span>

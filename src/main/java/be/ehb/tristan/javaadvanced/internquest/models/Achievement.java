@@ -23,6 +23,9 @@ public class Achievement {
     @Column(nullable = false)
     private Rarity rarity;
 
+    @Column(nullable = false)
+    private String pathToImage;
+
     @ManyToMany(mappedBy = "achievements", fetch = FetchType.EAGER)
     private Set<User> users;
 
@@ -36,6 +39,14 @@ public class Achievement {
 
     public Long getId() {
         return id;
+    }
+
+    public String getPathToImage() {
+        return pathToImage;
+    }
+
+    public void setPathToImage(String pathToImage) {
+        this.pathToImage = pathToImage;
     }
 
     public void setId(Long id) {

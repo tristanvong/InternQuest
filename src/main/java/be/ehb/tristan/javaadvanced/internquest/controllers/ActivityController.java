@@ -48,96 +48,77 @@ public class ActivityController {
     }
 
     @PostMapping("/create/{userId}")
-    public String createAndAssignActivity(@PathVariable Long userId,@RequestParam Long companyId ,@ModelAttribute Activity activity, Model model, Authentication authentication) {
+    public String createAndAssignActivityToUser(@PathVariable Long userId, @RequestParam Long companyId, @ModelAttribute Activity activity, Model model, Authentication authentication) {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
 
         if(userUsingURL == null || !userUsingURL.getId().equals(userId)) {
-            throw new RuntimeException("User with id: " + userId + " not authorized to use this page.");
+            throw new RuntimeException("You are not authorized to use this page.");
         }
 
         User user = userService.getUserById(userId);
-
         if(user == null) {
-            throw new RuntimeException("User with id: " + userId + " not found");
+            throw new RuntimeException("User with id " + userId + " not found.");
         }
 
         Company company = companyService.getCompanyById(companyId);
-
         if(company == null) {
-            throw new RuntimeException("Company with id: " + companyId + " not found");
+            throw new RuntimeException("Company with id: " + companyId + " not found.");
         }
 
         activity.getCompanies().add(company);
         activityService.saveActivity(activity);
 
-        if(user.getActivities() == null) {
-            user.setActivities(new HashSet<>());
+        if(userUsingURL.getActivities() == null) {
+            userUsingURL.setActivities(new HashSet<>());
         }
 
-        user.getActivities().add(activity);
+        userUsingURL.getActivities().add(activity);
 
         if(activity.getUsers() == null) {
             activity.setUsers(new HashSet<>());
         }
 
-        activity.getUsers().add(user);
-
-        userService.updateUser(user);
+        activity.getUsers().add(userUsingURL);
+        userService.updateUser(userUsingURL);
         activityService.saveActivity(activity);
-
-        model.addAttribute("user", user);
+        model.addAttribute("user", userUsingURL);
         return "redirect:/user/info";
     }
 
-    @GetMapping("/update/{userId}")
-    public String showUpdateActivityForm(@PathVariable Long userId, @RequestParam Long activityId, Model model, Authentication authentication) {
+    @GetMapping("/update/{activityId}")
+    public String showUpdateActivityForm(@PathVariable Long activityId, Model model, Authentication authentication) {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
-
-        if (userUsingURL == null || !userUsingURL.getId().equals(userId)) {
-            throw new RuntimeException("User with id: " + userId + " is not authorized to access this page.");
-        }
-
-        User user = userService.getUserById(userId);
-        if (user == null) {
-            throw new RuntimeException("User with id: " + userId + " not found");
+        if(userUsingURL == null) {
+            throw new RuntimeException("You are not authorized to use this page.");
         }
 
         Activity activity = activityService.getActivityById(activityId);
-        if (activity == null) {
+        if(activity == null) {
             throw new RuntimeException("Activity with id: " + activityId + " not found");
         }
 
-        boolean isAssociated = user.getActivities().stream()
+        boolean isUserAssociatedWithActivity = userUsingURL.getActivities().stream()
                 .anyMatch(associatedActivity -> associatedActivity.getId().equals(activityId));
 
-        if (!isAssociated) {
-            throw new RuntimeException("Activity with id: " + activityId + " is not associated with user: " + user.getUsername());
+        if(!isUserAssociatedWithActivity) {
+            throw new RuntimeException("You are not authorized to use this page. Not associated with activity");
         }
 
-        model.addAttribute("userId", userId);
+        model.addAttribute("userId", userUsingURL.getId());
         model.addAttribute("activity", activity);
         return "activity/update-activity-form";
     }
 
-    @PostMapping("/update/{userId}")
-    public String updateActivity(@PathVariable Long userId, @RequestParam Long activityId,@RequestParam String activityName ,@RequestParam String updatedStatus, Model model, Authentication authentication) {
+    @PostMapping("/update/{activityId}")
+    public String updateActivity(@PathVariable Long activityId, @RequestParam String activityName, @RequestParam String updatedStatus, Model model, Authentication authentication) {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
-
-        if(userUsingURL == null || !userUsingURL.getId().equals(userId)) {
-            throw new RuntimeException("User with id: " + userId + " is not authorized to access this page.");
+        if(userUsingURL == null) {
+            throw new RuntimeException("You are not authorized to use this page.");
         }
-
-        User user = userService.getUserById(userId);
-
-        if(user == null) {
-            throw new RuntimeException("User with id: " + userId + " not found");
-        }
-
         Activity activity = activityService.getActivityById(activityId);
-
         if(activity == null) {
             throw new RuntimeException("Activity with id: " + activityId + " not found");
         }
@@ -146,7 +127,7 @@ public class ActivityController {
         activity.setActivityDescription(updatedStatus);
 
         activityService.saveActivity(activity);
-        model.addAttribute("user", user);
+        model.addAttribute("user", userUsingURL);
         return "redirect:/user/info";
     }
 
@@ -159,5 +140,25 @@ public class ActivityController {
         }
         model.addAttribute("activities", userUsingURL.getActivities());
         return "activity/list-activities";
+    }
+
+    @GetMapping("/delete/{activityId}")
+    public String deleteActivity(@PathVariable Long activityId, Authentication authentication){
+        Activity activity = activityService.getActivityById(activityId);
+
+        if(activity == null) {
+            throw new RuntimeException("Activity with id: " + activityId + " not found");
+        }
+
+        String username = authentication.getName();
+        boolean isAuthorized = activity.getUsers().stream()
+                .anyMatch(user -> user.getUsername().equals(username));
+
+        if(!isAuthorized) {
+            throw new RuntimeException("You are not authorized to delete this activity.");
+        }
+
+        activityService.deleteActivityById(activityId);
+        return "redirect:/user/info";
     }
 }

@@ -7,11 +7,17 @@ import org.springframework.web.servlet.ModelAndView;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+    @ExceptionHandler(UserCreationException.class)
+    public String handleUserCreationException(UserCreationException exception, Model model) {
+        model.addAttribute("errorMessage", exception.getMessage());
+        model.addAttribute("exceptionName", exception.getClass().getSimpleName());
+        return "error/error-creation-account";
+    }
+
     @ExceptionHandler(RuntimeException.class)
-    public ModelAndView handleException(Exception exception, Model model){
-        ModelAndView mav = new ModelAndView("error/general-error");
-        mav.addObject("errorMessage", exception.getMessage());
-        mav.addObject("exceptionName", exception.getClass().getSimpleName());
-        return mav;
+    public String handleRunTimeException(RuntimeException exception, Model model) {
+        model.addAttribute("errorMessage", exception.getMessage());
+        model.addAttribute("exceptionName", exception.getClass().getSimpleName());
+        return "error/general-error";
     }
 }

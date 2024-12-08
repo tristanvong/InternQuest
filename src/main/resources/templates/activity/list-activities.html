@@ -10,6 +10,7 @@
         <li th:each="activity : ${activities}">
             <span th:text="${activity.activityName}">Activity name</span> -
             <span th:text="${activity.activityDescription}">Activity description</span>
+
             <ul>
                 <li th:each="company : ${activity.companies}">
                     <span th:text="${company.nameOfCompany}">Company name</span>
@@ -17,11 +18,14 @@
                     <span th:if="${company.description != null and !company.description.isEmpty()}" th:text="' - ' + ${company.description}"></span>
                 </li>
             </ul>
+
             <ul>
                 <li th:each="user : ${activity.users}">
-                    <a th:href="@{|/activities/update/${user.id}?activityId=${activity.id}|}">Update</a>
+                    <a th:href="@{|/activities/update/${activity.id}|}">Update</a>
+                    <a th:href="@{|/activities/delete/${activity.id}|}">Delete</a>
                 </li>
             </ul>
+
         </li>
     </ul>
 </body>

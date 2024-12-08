@@ -19,6 +19,15 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+//for checking if admin/regular user
+//    @GetMapping("/test")
+//    public String test(Authentication authentication, Model model) {
+//        authentication.getAuthorities().forEach(authority -> {
+//            System.out.println(authority);
+//                }
+//        );
+//        return "redirect:/user/info";
+//    }
 
     @GetMapping("/login")
     public String showLoginPage() {
@@ -43,9 +52,8 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "user/create-user-form";
         }
-        if(user.getAddress().getPostalCode() > 9999){
-            throw new FormValueIncorrectException("Postal code is too big");
-        }
+
+        userService.validateUserAddress(user);
         userService.addUser(user);
         return "user/login-form";
     }

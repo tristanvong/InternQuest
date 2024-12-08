@@ -16,7 +16,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true)
-    @Size(min = 5, max = 12,message = "Username needs to be between 5 and 12 characters long.")
+    @Size(min = 5, max = 20,message = "Username needs to be between 5 and 20 characters long.")
     private String username;
 
     @Column(nullable = false)
@@ -103,11 +103,11 @@ public class User {
         this.id = id;
     }
 
-    public @Size(min = 5, max = 12, message = "Username needs to be between 5 and 12 characters long.") String getUsername() {
+    public @Size(min = 5, max = 20, message = "Username needs to be between 5 and 20 characters long.") String getUsername() {
         return username;
     }
 
-    public void setUsername(@Size(min = 5, max = 12, message = "Username needs to be between 5 and 12 characters long.") String username) {
+    public void setUsername(@Size(min = 5, max = 20, message = "Username needs to be between 5 and 20 characters long.") String username) {
         this.username = username;
     }
 

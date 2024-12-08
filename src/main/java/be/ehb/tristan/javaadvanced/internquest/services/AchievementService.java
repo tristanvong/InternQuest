@@ -9,6 +9,10 @@ import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 @Service
 public class AchievementService {
 
@@ -25,6 +29,25 @@ public class AchievementService {
             achievement.setName(achievementEnum.getName());
             achievement.setDescription(achievementEnum.getDescription());
             achievement.setRarity(rarity);
+
+            ClassLoader classLoader = getClass().getClassLoader();
+            String baseDirectory = "static/images/achievements/";
+            String baseFileName = achievementEnum.getName().toLowerCase().replace(" ", "-");
+            String[] supportedImageExtensions = {"svg", "jpg", "png", "jpeg"};
+            String imagePath = null;
+
+            for(String extension : supportedImageExtensions) {
+                String filePath = baseDirectory + baseFileName + "." + extension;
+                if(classLoader.getResource(filePath) != null) {
+                    imagePath = "achievements/" + baseFileName + "." + extension;
+                    break;
+                }
+            }
+
+            if(imagePath == null) {
+                imagePath = "achievements/default.svg";
+            }
+            achievement.setPathToImage(imagePath);
             achievementRepository.save(achievement);
         }
 

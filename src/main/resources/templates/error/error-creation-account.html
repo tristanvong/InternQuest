@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>General Error</title>
+    <title>Error while creating account</title>
 </head>
 <body>
-<img th:src="@{/images/error/error.svg}" height="100px" width="100px">
+    <img th:src="@{/images/error/error.svg}" height="100px" width="100px" alt="Error Icon">
     <h1>Something went wrong.</h1>
     <p th:text="${errorMessage}"></p>
     <p th:text="'Exception that was thrown: ' + ${exceptionName}"></p>
-    <span><a href="/user/info">Go back to your user information page</a></span>
+    <span><a href="/user/create-user">Go back to create account page.</a></span>
 </body>
 </html>

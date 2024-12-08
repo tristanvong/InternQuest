@@ -26,51 +26,49 @@ public class AchievementController {
     @Autowired
     private AchievementService achievementService;
 
-    @GetMapping("/check/made-account/{userId}")
-    public String checkAchievements(@PathVariable Long userId, Authentication authentication) {
+    @GetMapping("/check/made-account")
+    public String checkMadeAnAccountAchievement(Authentication authentication) {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
 
-        if(userUsingURL == null || !userUsingURL.getId().equals(userId)) {
+        if(userUsingURL == null) {
             throw new RuntimeException("You are not authorized to do that action");
         }
 
-        User user = userService.getUserById(userId);
+        User user = userService.getUserById(userUsingURL.getId());
         achievementService.checkAndAssignAchievement(user, AchievementEnum.MADE_AN_ACCOUNT, Rarity.EASY);
 
-        return "redirect:/info";
+        return "redirect:/user/info";
     }
 
-    @GetMapping("/check/created-company/{userId}")
-    public String checkCreatedCompanyAchievement(@PathVariable Long userId, Authentication authentication) {
+    @GetMapping("/check/created-company")
+    public String checkCreatedCompanyAchievement(Authentication authentication) {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
 
-        if(userUsingURL == null || !userUsingURL.getId().equals(userId)) {
+        if(userUsingURL == null) {
             throw new RuntimeException("You are not authorized to do that action");
         }
 
-        User user = userService.getUserById(userId);
+        User user = userService.getUserById(userUsingURL.getId());
         Set<Company> userCompanies = user.getCompanies();
 
         if(!userCompanies.isEmpty()) {
             achievementService.checkAndAssignAchievement(user, AchievementEnum.CREATED_A_COMPANY, Rarity.EASY);
+        }else {
+            throw new RuntimeException("You do not meet the requirements to earn this achievement");
         }
-        return "redirect:/info";
+        return "redirect:/user/info";
     }
 
-    @GetMapping("/list/{userId}")
-    public String listAchievements(@PathVariable Long userId, Model model , Authentication authentication) {
+    @GetMapping("/list")
+    public String listAchievements(Model model , Authentication authentication) {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
-        if(userUsingURL == null || !userUsingURL.getId().equals(userId)) {
+        if(userUsingURL == null) {
             throw new RuntimeException("You are not authorized to access this page.");
         }
-        User user = userService.getUserById(userId);
-        if(user == null) {
-            throw new RuntimeException("User with id " + userId + " not found.");
-        }
-        model.addAttribute("achievements", user.getAchievements());
+        model.addAttribute("achievements", userUsingURL.getAchievements());
         return "achievement/list-achievements";
     }
 }

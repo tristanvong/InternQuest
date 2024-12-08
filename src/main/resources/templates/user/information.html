@@ -5,7 +5,19 @@
   <title>Information Page</title>
 </head>
 <body>
-<h1>Hello</h1>
-<p th:text="${username}"></p>
+<h1>Welcome back: <span th:text="'@'+${username}"></span></h1>
+<h2>--- Company Section ---</h2>
+<span><a href="/companies/create">Create a company!</a></span>
+<span><a href="/companies/list">See company list</a></span>
+
+<h2>--- Activity Section ---</h2>
+<span><a href="/activities/create">Create an activity!</a></span>
+<span><a href="/activities/list">See activity list</a></span>
+
+<h2>--- Achievement Section ---</h2>
+<span><a href="/achievements/list">See your achievements!</a></span><br>
+<span><a href="/achievements/check/made-account">Click to see if you have the "Made an Account" achievement!</a></span><br>
+<span><a href="/achievements/check/created-company">Click to see if you have the "Created a Company" achievement!</a></span>
+
 </body>
 </html>

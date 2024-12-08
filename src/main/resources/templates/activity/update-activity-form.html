@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Update Activity:</h1>
-    <form th:action="@{|/activities/update/${userId}|}" method="post">
+    <form th:action="@{|/activities/update/${activityId}|}" method="post">
         <input type="hidden" name="activityId" th:value="${activity.id}"/>
 
         <div>
