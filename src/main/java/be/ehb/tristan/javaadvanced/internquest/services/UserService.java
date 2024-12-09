@@ -1,10 +1,7 @@
 package be.ehb.tristan.javaadvanced.internquest.services;
 
 import be.ehb.tristan.javaadvanced.internquest.enums.Role;
-import be.ehb.tristan.javaadvanced.internquest.exceptions.UserAlreadyExistsInDatabaseException;
-import be.ehb.tristan.javaadvanced.internquest.exceptions.UserCreationException;
-import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenException;
-import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.*;
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.repositories.AchievementRepository;
@@ -200,6 +197,53 @@ public class UserService {
 
         if(!isPostalCodeValid && postalCode != 0){
             throw new UserCreationException("Address is optional but needs to be valid if used.");
+        }
+    }
+    public void validateUserAddressIfAlreadyLoggedIn(User user){
+        String street = user.getAddress().getStreetName();
+        int houseNumber = user.getAddress().getHouseNumber();
+        int postalCode = user.getAddress().getPostalCode();
+        String city = user.getAddress().getCity();
+        String country = user.getAddress().getCountry();
+        int busNumber = user.getAddress().getBusNumber();
+        boolean isPostalCodeValid = true;
+
+        if(postalCode < 1000 || postalCode > 9999){
+            isPostalCodeValid = false;
+        }
+
+        if(!(street == null || street.isEmpty())){
+            if(houseNumber <= 0 || isPostalCodeValid || city == "" || country == ""){
+                throw new FormValueIncorrectException("Address is optional but needs to be valid if used.");
+            }
+        }
+
+        if(houseNumber != 0){
+            if(street == "" || isPostalCodeValid || city == "" || country == ""){
+                throw new FormValueIncorrectException("Address is optional but needs to be valid if used.");
+            }
+        }
+
+        if(isPostalCodeValid){
+            if(street == "" || houseNumber <= 0 || city == "" || country == ""){
+                throw new FormValueIncorrectException("Address is optional but needs to be valid if used.");
+            }
+        }
+
+        if(!(city == null || city.isEmpty())){
+            if(street == "" || houseNumber <= 0 || isPostalCodeValid || city == "" || country == ""){
+                throw new FormValueIncorrectException("Address is optional but needs to be valid if used.");
+            }
+        }
+
+        if(!(country == null || country.isEmpty())){
+            if(street == "" || houseNumber <= 0 || isPostalCodeValid || city == "" || country == ""){
+                throw new FormValueIncorrectException("Address is optional but needs to be valid if used.");
+            }
+        }
+
+        if(!isPostalCodeValid && postalCode != 0){
+            throw new FormValueIncorrectException("Address is optional but needs to be valid if used.");
         }
     }
 //    public String verify(LoginDTO loginDTO) {

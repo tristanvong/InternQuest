@@ -95,6 +95,7 @@ public class UserController {
         if(userUsingURL == null){
             throw new UserNotFoundException("User not found");
         }
+        userService.validateUserAddressIfAlreadyLoggedIn(user);
         user.setId(userUsingURL.getId());
         user.setRole(Role.REGULAR_USER);
         userService.editUser(user);
