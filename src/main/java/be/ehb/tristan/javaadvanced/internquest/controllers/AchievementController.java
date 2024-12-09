@@ -28,41 +28,6 @@ public class AchievementController {
     @Autowired
     private AchievementService achievementService;
 
-    @GetMapping("/check/made-account")
-    public String checkMadeAnAccountAchievement(Authentication authentication) {
-        String username = authentication.getName();
-        User userUsingURL = userService.getUserByUsername(username);
-
-        if(userUsingURL == null) {
-            throw new UnauthorizedAccessException("You are not authorized to do that action");
-        }
-
-        User user = userService.getUserById(userUsingURL.getId());
-        achievementService.checkAndAssignAchievement(user, AchievementEnum.MADE_AN_ACCOUNT, Rarity.EASY);
-
-        return "redirect:/user/info";
-    }
-
-    @GetMapping("/check/created-company")
-    public String checkCreatedCompanyAchievement(Authentication authentication) {
-        String username = authentication.getName();
-        User userUsingURL = userService.getUserByUsername(username);
-
-        if(userUsingURL == null) {
-            throw new UnauthorizedAccessException("You are not authorized to do that action");
-        }
-
-        User user = userService.getUserById(userUsingURL.getId());
-        Set<Company> userCompanies = user.getCompanies();
-
-        if(!userCompanies.isEmpty()) {
-            achievementService.checkAndAssignAchievement(user, AchievementEnum.CREATED_A_COMPANY, Rarity.EASY);
-        }else {
-            throw new RequirementsNotMetException("You do not meet the requirements to earn this achievement");
-        }
-        return "redirect:/user/info";
-    }
-
     @GetMapping("/check")
     public String checkAchievements(Authentication authentication) {
         String username = authentication.getName();
@@ -80,10 +45,12 @@ public class AchievementController {
             System.err.println("Error assigning MADE_AN_ACCOUNT: " + e.getMessage());
         }
 
-        try {
-            achievementService.checkAndAssignAchievement(user, AchievementEnum.CREATED_A_COMPANY, Rarity.EASY);
-        } catch (Exception e) {
-            System.err.println("Error assigning CREATED_A_COMPANY: " + e.getMessage());
+        if (!user.getCompanies().isEmpty()) {
+            try {
+                achievementService.checkAndAssignAchievement(user, AchievementEnum.CREATED_A_COMPANY, Rarity.EASY);
+            } catch (Exception e) {
+                System.err.println("Error assigning CREATED_A_COMPANY: " + e.getMessage());
+            }
         }
 
         return "redirect:/achievements/list";
