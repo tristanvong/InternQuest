@@ -52,7 +52,7 @@ InternQuest is a platform designed for users to manage and track their progress 
 
 ## 🌟 Extra
 
-- [Entity Relationship Diagram (ERD)](https://imgur.com/a/hi91uwx) 🗺️
+- [Entity Relationship Diagram (ERD)](https://imgur.com/a/ys9xwuu) 🗺️
 - [Trello Kanban Board](https://trello.com/b/v5k4sJ6D/kanban-java-advanced-internquest) 📋
 - [Wikimedia Commons](https://commons.wikimedia.org/wiki/Main_Page)🆓
 
