@@ -2,6 +2,8 @@ package be.ehb.tristan.javaadvanced.internquest.controllers;
 
 import be.ehb.tristan.javaadvanced.internquest.enums.AchievementEnum;
 import be.ehb.tristan.javaadvanced.internquest.enums.Rarity;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.RequirementsNotMetException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.UnauthorizedAccessException;
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.services.AchievementService;
@@ -32,7 +34,7 @@ public class AchievementController {
         User userUsingURL = userService.getUserByUsername(username);
 
         if(userUsingURL == null) {
-            throw new RuntimeException("You are not authorized to do that action");
+            throw new UnauthorizedAccessException("You are not authorized to do that action");
         }
 
         User user = userService.getUserById(userUsingURL.getId());
@@ -47,7 +49,7 @@ public class AchievementController {
         User userUsingURL = userService.getUserByUsername(username);
 
         if(userUsingURL == null) {
-            throw new RuntimeException("You are not authorized to do that action");
+            throw new UnauthorizedAccessException("You are not authorized to do that action");
         }
 
         User user = userService.getUserById(userUsingURL.getId());
@@ -56,7 +58,7 @@ public class AchievementController {
         if(!userCompanies.isEmpty()) {
             achievementService.checkAndAssignAchievement(user, AchievementEnum.CREATED_A_COMPANY, Rarity.EASY);
         }else {
-            throw new RuntimeException("You do not meet the requirements to earn this achievement");
+            throw new RequirementsNotMetException("You do not meet the requirements to earn this achievement");
         }
         return "redirect:/user/info";
     }
@@ -66,7 +68,7 @@ public class AchievementController {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
         if(userUsingURL == null) {
-            throw new RuntimeException("You are not authorized to access this page.");
+            throw new UnauthorizedAccessException("You are not authorized to access this page.");
         }
         model.addAttribute("achievements", userUsingURL.getAchievements());
         return "achievement/list-achievements";

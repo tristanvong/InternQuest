@@ -1,6 +1,9 @@
 package be.ehb.tristan.javaadvanced.internquest.controllers;
 
 import be.ehb.tristan.javaadvanced.internquest.enums.Industry;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.CompanyNotFoundByIdException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.UnauthorizedAccessException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenException;
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.services.CompanyService;
@@ -28,7 +31,7 @@ public class CompanyController {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
         if (userUsingURL == null) {
-            throw new RuntimeException("You are not authorized to access this page.");
+            throw new UnauthorizedAccessException("You are not authorized to access this page.");
         }
         model.addAttribute("userId", userUsingURL.getId());
         model.addAttribute("company", new Company());
@@ -41,12 +44,12 @@ public class CompanyController {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
         if (userUsingURL == null || !userUsingURL.getId().equals(userId)) {
-            throw new RuntimeException("You are not authorized to access this page.");
+            throw new UnauthorizedAccessException("You are not authorized to access this page.");
         }
         User user = userService.getUserById(userId);
 
         if (user == null) {
-            throw new IllegalArgumentException("User with id " + userId + " not found");
+            throw new UserNotFoundByIdGivenException("User with id " + userId + " not found");
         }
 
         companyService.validateCompanyInformation(company, industry, user);
@@ -64,7 +67,7 @@ public class CompanyController {
                 .anyMatch(user -> user.getUsername().equals(username));
 
         if (!isAuthorized) {
-            throw new RuntimeException("You are not authorized to access this page.");
+            throw new UnauthorizedAccessException("You are not authorized to access this page.");
         }
 
         model.addAttribute("company", company);
@@ -81,7 +84,7 @@ public class CompanyController {
                 .anyMatch(user -> user.getUsername().equals(username));
 
         if (!isAuthorized) {
-            throw new RuntimeException("You are not authorized to access this page.");
+            throw new UnauthorizedAccessException("You are not authorized to access this page.");
         }
 
         companyService.validateCompanyInformation(changedCompany, company, industry);
@@ -93,7 +96,7 @@ public class CompanyController {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
         if (userUsingURL == null) {
-            throw new RuntimeException("You are not authorized to access this page.");
+            throw new UnauthorizedAccessException("You are not authorized to access this page.");
         }
         Long userId = userUsingURL.getId();
 
@@ -106,7 +109,7 @@ public class CompanyController {
     public String deleteCompany(@PathVariable Long companyId, Authentication authentication) {
         Company company = companyService.getCompanyById(companyId);
         if(company == null) {
-            throw new RuntimeException("Company with id " + companyId + " not found");
+            throw new CompanyNotFoundByIdException("Company with id " + companyId + " not found");
         }
 
         String username = authentication.getName();
@@ -114,7 +117,7 @@ public class CompanyController {
                 .anyMatch(user -> user.getUsername().equals(username));
 
         if(!userIsAuthorizeToDeleteCompany) {
-            throw new RuntimeException("You are not authorized to perform this action.");
+            throw new UnauthorizedAccessException("You are not authorized to perform this action.");
         }
 
         companyService.deleteCompanyById(companyId);

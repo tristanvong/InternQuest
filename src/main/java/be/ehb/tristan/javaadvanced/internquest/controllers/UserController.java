@@ -2,6 +2,8 @@ package be.ehb.tristan.javaadvanced.internquest.controllers;
 
 import be.ehb.tristan.javaadvanced.internquest.enums.Role;
 import be.ehb.tristan.javaadvanced.internquest.exceptions.FormValueIncorrectException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.UnauthorizedAccessException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundException;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.services.UserService;
 import jakarta.validation.Valid;
@@ -41,7 +43,7 @@ public class UserController {
     @GetMapping("/create-user")
     public String createUser(Model model, Authentication authentication) {
         if(authentication != null && authentication.isAuthenticated()){
-            throw new RuntimeException("You cannot access this page while logged in");
+            throw new UnauthorizedAccessException("You cannot access this page while logged in");
         }
         model.addAttribute("user", new User());
         model.addAttribute("isCreate", true);
@@ -51,7 +53,7 @@ public class UserController {
     @PostMapping("/create-user")
     public String createUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult, Authentication authentication) {
         if(authentication != null && authentication.isAuthenticated()) {
-            throw new RuntimeException("You cannot perform this action while logged in");
+            throw new UnauthorizedAccessException("You cannot perform this action while logged in");
         }
         if (bindingResult.hasErrors()) {
             return "user/create-user-form";
@@ -76,7 +78,7 @@ public class UserController {
         User user = userService.getUserByUsername(username);
 
         if(user == null) {
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found");
         }
 
         model.addAttribute("user", user);
@@ -88,11 +90,10 @@ public class UserController {
         if(bindingResult.hasErrors()) {
             return "user/account-edit-form";
         }
-
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
         if(userUsingURL == null){
-            throw new RuntimeException("User not found");
+            throw new UserNotFoundException("User not found");
         }
         user.setId(userUsingURL.getId());
         user.setRole(Role.REGULAR_USER);
@@ -105,7 +106,7 @@ public class UserController {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
         if(userUsingURL == null) {
-            throw new RuntimeException("You do not have access to this action!");
+            throw new UnauthorizedAccessException("You do not have access to this action!");
         }
         try {
             Long id = userUsingURL.getId();
@@ -120,7 +121,7 @@ public class UserController {
         String username = authentication.getName();
         User user = userService.getUserByUsername(username);
         if(user == null) {
-            throw new RuntimeException("You are not authorized to access this page!");
+            throw new UnauthorizedAccessException("You are not authorized to access this page!");
         }
 
         model.addAttribute("user", user);

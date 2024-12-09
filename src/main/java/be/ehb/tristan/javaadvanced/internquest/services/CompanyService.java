@@ -1,6 +1,8 @@
 package be.ehb.tristan.javaadvanced.internquest.services;
 
 import be.ehb.tristan.javaadvanced.internquest.enums.Industry;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.CompanyNotFoundByIdException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.FormValueIncorrectException;
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
 import be.ehb.tristan.javaadvanced.internquest.repositories.ActivityRepository;
@@ -23,7 +25,7 @@ public class CompanyService {
 
     public Company getCompanyById(Long id){
         return companyRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Company not found by id " + id));
+                .orElseThrow(() -> new CompanyNotFoundByIdException("Company not found by id " + id));
     }
 
     public Company saveCompany(Company company){
@@ -32,7 +34,7 @@ public class CompanyService {
 
     public void deleteCompanyById(Long companyId){
         Company company = companyRepository.findById(companyId)
-                .orElseThrow(() -> new RuntimeException("Company not found by id " + companyId));
+                .orElseThrow(() -> new CompanyNotFoundByIdException("Company not found by id " + companyId));
 
         company.getUsers().forEach(user -> {
             user.getCompanies().remove(company);
@@ -53,27 +55,27 @@ public class CompanyService {
 
     public void validateCompanyInformation(Company company, Industry industry, User user){
         if(company.getNameOfCompany() == "" || company.getNameOfCompany() == null){
-            throw new RuntimeException("Company name is empty");
+            throw new FormValueIncorrectException("Company name is empty");
         }
         if(company.getAddress().getStreetName() == "" || company.getAddress().getStreetName() == null){
-            throw new RuntimeException("Street name is empty");
+            throw new FormValueIncorrectException("Street name is empty");
         }
         if(company.getAddress().getHouseNumber() <= 0){
-            throw new RuntimeException("House number cannot be negative or zero");
+            throw new FormValueIncorrectException("House number cannot be negative or zero");
         }
         if(company.getAddress().getPostalCode() <= 0){
-            throw new RuntimeException("Postal code cannot be negative or zero");
+            throw new FormValueIncorrectException("Postal code cannot be negative or zero");
         }
         if(company.getAddress().getPostalCode() > 9999)
-            throw new RuntimeException("Postal code cannot exceed 9999");
+            throw new FormValueIncorrectException("Postal code cannot exceed 9999");
         if(company.getAddress().getCity() == "" || company.getAddress().getCity() == null){
-            throw new RuntimeException("City name is empty");
+            throw new FormValueIncorrectException("City name is empty");
         }
         if(company.getAddress().getCountry() == "" || company.getAddress().getCountry() == null){
-            throw new RuntimeException("Country name is empty");
+            throw new FormValueIncorrectException("Country name is empty");
         }
         if(company.getIndustry() == null){
-            throw new RuntimeException("Industry is empty");
+            throw new FormValueIncorrectException("Industry is empty");
         }
         company.setIndustry(industry);
 
@@ -92,28 +94,28 @@ public class CompanyService {
 
     public void validateCompanyInformation(Company changedCompany, Company company, Industry industry){
         if (changedCompany.getNameOfCompany() == "" || changedCompany.getNameOfCompany() == null){
-            throw new RuntimeException("Company name is empty");
+            throw new FormValueIncorrectException("Company name is empty");
         }
         if(changedCompany.getAddress().getStreetName() == "" || changedCompany.getAddress().getStreetName() == null){
-            throw new RuntimeException("Street name is empty");
+            throw new FormValueIncorrectException("Street name is empty");
         }
         if(changedCompany.getAddress().getHouseNumber() <= 0){
-            throw new RuntimeException("House number cannot be negative or zero");
+            throw new FormValueIncorrectException("House number cannot be negative or zero");
         }
         if(changedCompany.getAddress().getPostalCode() <= 0){
-            throw new RuntimeException("Postal code cannot be equal to zero or under zero");
+            throw new FormValueIncorrectException("Postal code cannot be equal to zero or under zero");
         }
         if (changedCompany.getAddress().getPostalCode() > 9999){
-            throw new RuntimeException("Postal code cannot be greater than 9999");
+            throw new FormValueIncorrectException("Postal code cannot be greater than 9999");
         }
         if(changedCompany.getAddress().getCity() == "" || changedCompany.getAddress().getCity() == null){
-            throw new RuntimeException("City is empty");
+            throw new FormValueIncorrectException("City is empty");
         }
         if(changedCompany.getAddress().getCountry() == "" || changedCompany.getAddress().getCountry() == null){
-            throw new RuntimeException("Country is empty");
+            throw new FormValueIncorrectException("Country is empty");
         }
         if(changedCompany.getIndustry() == null){
-            throw new RuntimeException("Industry is empty");
+            throw new FormValueIncorrectException("Industry is empty");
         }
 
         company.setNameOfCompany(changedCompany.getNameOfCompany());

@@ -1,5 +1,7 @@
 package be.ehb.tristan.javaadvanced.internquest.controllers;
 
+import be.ehb.tristan.javaadvanced.internquest.exceptions.ActivityNotFoundByIdException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.UnauthorizedAccessException;
 import be.ehb.tristan.javaadvanced.internquest.models.Activity;
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
@@ -33,7 +35,7 @@ public class ActivityController {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
         if(userUsingURL == null) {
-            throw new RuntimeException("You are not authorized to use this page.");
+            throw new UnauthorizedAccessException("You are not authorized to use this page.");
         }
 
         Set<Company> availableCompanies = userUsingURL.getCompanies()
@@ -53,17 +55,17 @@ public class ActivityController {
         User userUsingURL = userService.getUserByUsername(username);
 
         if(userUsingURL == null || !userUsingURL.getId().equals(userId)) {
-            throw new RuntimeException("You are not authorized to use this page.");
+            throw new UnauthorizedAccessException("You are not authorized to use this page.");
         }
 
         User user = userService.getUserById(userId);
         if(user == null) {
-            throw new RuntimeException("User with id " + userId + " not found.");
+            throw new UnauthorizedAccessException("User with id " + userId + " not found.");
         }
 
         Company company = companyService.getCompanyById(companyId);
         if(company == null) {
-            throw new RuntimeException("Company with id: " + companyId + " not found.");
+            throw new UnauthorizedAccessException("Company with id: " + companyId + " not found.");
         }
 
         activity.getCompanies().add(company);
@@ -91,19 +93,19 @@ public class ActivityController {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
         if(userUsingURL == null) {
-            throw new RuntimeException("You are not authorized to use this page.");
+            throw new UnauthorizedAccessException("You are not authorized to use this page.");
         }
 
         Activity activity = activityService.getActivityById(activityId);
         if(activity == null) {
-            throw new RuntimeException("Activity with id: " + activityId + " not found");
+            throw new ActivityNotFoundByIdException("Activity with id: " + activityId + " not found");
         }
 
         boolean isUserAssociatedWithActivity = userUsingURL.getActivities().stream()
                 .anyMatch(associatedActivity -> associatedActivity.getId().equals(activityId));
 
         if(!isUserAssociatedWithActivity) {
-            throw new RuntimeException("You are not authorized to use this page. Not associated with activity");
+            throw new UnauthorizedAccessException("You are not authorized to use this page. Not associated with activity");
         }
 
         model.addAttribute("userId", userUsingURL.getId());
@@ -116,11 +118,11 @@ public class ActivityController {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
         if(userUsingURL == null) {
-            throw new RuntimeException("You are not authorized to use this page.");
+            throw new UnauthorizedAccessException("You are not authorized to use this page.");
         }
         Activity activity = activityService.getActivityById(activityId);
         if(activity == null) {
-            throw new RuntimeException("Activity with id: " + activityId + " not found");
+            throw new ActivityNotFoundByIdException("Activity with id: " + activityId + " not found");
         }
 
         activity.setActivityName(activityName);
@@ -136,7 +138,7 @@ public class ActivityController {
         String username = authentication.getName();
         User userUsingURL = userService.getUserByUsername(username);
         if(userUsingURL == null) {
-            throw new RuntimeException("You are not authorized to access this page.");
+            throw new UnauthorizedAccessException("You are not authorized to access this page.");
         }
         model.addAttribute("activities", userUsingURL.getActivities());
         return "activity/list-activities";
@@ -147,7 +149,7 @@ public class ActivityController {
         Activity activity = activityService.getActivityById(activityId);
 
         if(activity == null) {
-            throw new RuntimeException("Activity with id: " + activityId + " not found");
+            throw new ActivityNotFoundByIdException("Activity with id: " + activityId + " not found");
         }
 
         String username = authentication.getName();
@@ -155,7 +157,7 @@ public class ActivityController {
                 .anyMatch(user -> user.getUsername().equals(username));
 
         if(!isAuthorized) {
-            throw new RuntimeException("You are not authorized to delete this activity.");
+            throw new UnauthorizedAccessException("You are not authorized to delete this activity.");
         }
 
         activityService.deleteActivityById(activityId);

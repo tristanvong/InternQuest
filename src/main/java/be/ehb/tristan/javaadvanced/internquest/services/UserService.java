@@ -108,7 +108,7 @@ public class UserService {
 
     public void editUser(User user){
         User existingUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new RuntimeException("User not found with the following ID: " + user.getId()));
+                .orElseThrow(() -> new UserNotFoundByIdGivenException("User not found with the following ID: " + user.getId()));
 
         String encryptedPassword = bCryptPasswordEncoder.encode(user.getPassword());
         existingUser.setFirstName(user.getFirstName());
@@ -124,7 +124,7 @@ public class UserService {
     @Transactional
     public void deleteUser(Long userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User not found with the following ID: " + userId));
+                .orElseThrow(() -> new UserNotFoundByIdGivenException("User not found with the following ID: " + userId));
 
         user.getCompanies().forEach(company -> {
             company.getUsers().remove(user);

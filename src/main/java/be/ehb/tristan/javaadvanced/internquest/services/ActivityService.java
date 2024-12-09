@@ -1,5 +1,6 @@
 package be.ehb.tristan.javaadvanced.internquest.services;
 
+import be.ehb.tristan.javaadvanced.internquest.exceptions.ActivityNotFoundByIdException;
 import be.ehb.tristan.javaadvanced.internquest.models.Activity;
 import be.ehb.tristan.javaadvanced.internquest.repositories.ActivityRepository;
 import be.ehb.tristan.javaadvanced.internquest.repositories.CompanyRepository;
@@ -25,7 +26,7 @@ public class ActivityService {
 
     public Activity getActivityById(Long id) {
         return activityRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Activity with id " + id + " not found"));
+                .orElseThrow(() -> new ActivityNotFoundByIdException("Activity with id " + id + " not found"));
     }
 
     public List<Activity> getAllActivities() {
@@ -34,7 +35,7 @@ public class ActivityService {
 
     public void deleteActivityById(Long activityId) {
         Activity activity = activityRepository.findById(activityId)
-                .orElseThrow(() -> new RuntimeException("Activity not found by id: " + activityId));
+                .orElseThrow(() -> new ActivityNotFoundByIdException("Activity not found by id: " + activityId));
 
         activity.getUsers().forEach(user -> {
             user.getActivities().remove(activity);
