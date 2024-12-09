@@ -47,7 +47,9 @@ public class AchievementService {
             achievementRepository.save(achievement);
         }
 
-        boolean alreadyHasAchievement = user.getAchievements().contains(achievement);
+        Achievement finalAchievement = achievement;
+        boolean alreadyHasAchievement = user.getAchievements().stream()
+                .anyMatch(a -> a.getName().equals(finalAchievement.getName()));
 
         if (!alreadyHasAchievement) {
             user.getAchievements().add(achievement);

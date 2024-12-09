@@ -63,6 +63,32 @@ public class AchievementController {
         return "redirect:/user/info";
     }
 
+    @GetMapping("/check")
+    public String checkAchievements(Authentication authentication) {
+        String username = authentication.getName();
+        User userUsingURL = userService.getUserByUsername(username);
+
+        if (userUsingURL == null) {
+            throw new UnauthorizedAccessException("You are not authorized to do that action");
+        }
+
+        User user = userService.getUserById(userUsingURL.getId());
+
+        try {
+            achievementService.checkAndAssignAchievement(user, AchievementEnum.MADE_AN_ACCOUNT, Rarity.EASY);
+        } catch (Exception e) {
+            System.err.println("Error assigning MADE_AN_ACCOUNT: " + e.getMessage());
+        }
+
+        try {
+            achievementService.checkAndAssignAchievement(user, AchievementEnum.CREATED_A_COMPANY, Rarity.EASY);
+        } catch (Exception e) {
+            System.err.println("Error assigning CREATED_A_COMPANY: " + e.getMessage());
+        }
+
+        return "redirect:/achievements/list";
+    }
+
     @GetMapping("/list")
     public String listAchievements(Model model , Authentication authentication) {
         String username = authentication.getName();
