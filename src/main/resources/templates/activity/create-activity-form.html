@@ -1,42 +1,60 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}" th:with="pageTitle='Create Activity'">
 <head>
     <meta charset="UTF-8">
     <title>Create Activity Form</title>
 </head>
-<body>
-    <form th:action="@{|/activities/create/${userId}|}" method="post" th:object="${activity}">
-        <div>
-            <label for="activityName">Activity name:</label>
-            <input type="text" id="activityName" th:field="*{activityName}" required>
-        </div>
+<body class="bg-light" th:fragment="content">
 
-        <div>
-            <label for="companySelect">Select company:</label>
-            <select id="companySelect" name="companyId" required>
-                <option value="">--- select your company ---</option>
-                <th:block th:each="company : ${userCompanies}">
-                    <option th:value="${company.id}" th:text="${company.nameOfCompany}"></option>
-                </th:block>
-            </select>
-        </div>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
 
-        <div>
-            <label for="activityDescription">Activity description:</label>
-            <textarea id="activityDescription" name="description" th:field="*{activityDescription}"></textarea>
-        </div>
+            <div class="card-header bg-primary text-white">
+                <h2 class="h4 mb-0">Create New Activity</h2>
+            </div>
 
-        <div>
-            <label for="activityStartDate">Start date:</label>
-            <input type="date" id="activityStartDate" th:field="*{activityStartDate}" required>
-        </div>
+            <div class="card-body">
+                <form th:action="@{|/activities/create/${userId}|}" method="post" th:object="${activity}">
 
-        <div>
-            <label for="activityDeadline">Deadline:</label>
-            <input type="date" id="activityDeadline" th:field="*{activityDeadline}" required>
-        </div>
+                    <div class="mb-3">
+                        <label for="activityName" class="form-label">Activity name:</label>
+                        <input type="text" id="activityName" th:field="*{activityName}" class="form-control" required>
+                    </div>
 
-        <button type="submit">Create activity</button>
-    </form>
+                    <div class="mb-3">
+                        <label for="companySelect" class="form-label">Select company:</label>
+                        <select id="companySelect" name="companyId" class="form-select" required>
+                            <option value="">--- select your company ---</option>
+                            <th:block th:each="company : ${userCompanies}">
+                                <option th:value="${company.id}" th:text="${company.nameOfCompany}"></option>
+                            </th:block>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="activityDescription" class="form-label">Activity description:</label>
+                        <textarea id="activityDescription" name="description" th:field="*{activityDescription}" class="form-control"></textarea>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="activityStartDate" class="form-label">Start date:</label>
+                        <input type="date" id="activityStartDate" th:field="*{activityStartDate}" class="form-control" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="activityDeadline" class="form-label">Deadline:</label>
+                        <input type="date" id="activityDeadline" th:field="*{activityDeadline}" class="form-control" required>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <button type="submit" class="btn btn-primary">Create activity</button>
+                        <a href="/user/info" class="btn btn-outline-primary">Go Back</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -1,25 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}" th:with="pageTitle='Update Activity'">
 <head>
     <meta charset="UTF-8">
     <title>Update Activity Form</title>
 </head>
-<body>
-    <h1>Update Activity:</h1>
-    <form th:action="@{|/activities/update/${activityId}|}" method="post">
-        <input type="hidden" name="activityId" th:value="${activity.id}"/>
+<body class="bg-light" th:fragment="content">
 
-        <div>
-            <label for="activityName">Activity name:</label>
-            <input type="text" id="activityName" name="activityName" th:value="${activity.activityName}"/>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
+
+            <div class="card-header bg-primary text-white">
+                <h2 class="h4 mb-0">Update Activity</h2>
+            </div>
+
+            <div class="card-body">
+                <form th:action="@{|/activities/update/${activityId}|}" method="post">
+                    <input type="hidden" name="activityId" th:value="${activity.id}" />
+
+                    <div class="mb-3">
+                        <label for="activityName" class="form-label">Activity Name:</label>
+                        <input type="text" id="activityName" name="activityName" th:value="${activity.activityName}" class="form-control" required />
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="updatedStatus" class="form-label">Activity Description/Status:</label>
+                        <input type="text" id="updatedStatus" name="updatedStatus" th:value="${activity.activityDescription}" class="form-control" required />
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">Update Activity</button>
+                        <a href="/user/info" class="btn btn-outline-primary">Go Back</a>
+                    </div>
+
+                </form>
+            </div>
         </div>
+    </div>
 
-        <div>
-            <label for="updatedStatus">Activity description/status:</label>
-            <input type="text" id="updatedStatus" name="updatedStatus" th:value="${activity.activityDescription}"/>
-        </div>
-
-        <button type="submit">Update Activity</button>
-    </form>
 </body>
 </html>

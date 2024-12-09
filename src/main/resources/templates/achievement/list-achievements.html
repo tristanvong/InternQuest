@@ -1,18 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}" th:with="pageTitle='List Achievements'">
 <head>
     <meta charset="UTF-8">
     <title>List of user's achievements</title>
 </head>
-<body>
-    <h1>Your achievements:</h1>
-    <ul>
-        <li th:each="achievement : ${achievements}">
-            <img th:src="@{/images/{path}(path=${achievement.pathToImage})}" alt="Achievement Picture" width="100px" height="100px">
-            <span th:text="${achievement.name}">Achievement name</span>
-            <span th:text="${achievement.description}">Achievement description</span>
-            <span th:text="${achievement.rarity}">Achievement rarity</span>
-        </li>
-    </ul>
+<body class="bg-light" th:fragment="content">
+
+    <div class="container mt-5">
+        <h1 class="mb-4 text-center">Your Achievements</h1>
+        <div class="row g-4">
+
+            <li th:each="achievement : ${achievements}" class="col-md-4 list-unstyled">
+                <div class="card shadow-sm">
+                    <img th:src="@{/images/{path}(path=${achievement.pathToImage})}" alt="Achievement Picture" class="card-img-top" style="height: 200px; object-fit: fill;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${achievement.name}">Achievement name</h5>
+                        <p class="card-text" th:text="${achievement.description}">Achievement description</p>
+                        <p class="text-muted" th:text="${achievement.rarity}">Achievement rarity</p>
+                    </div>
+                </div>
+            </li>
+
+        </div>
+    </div>
+
 </body>
 </html>

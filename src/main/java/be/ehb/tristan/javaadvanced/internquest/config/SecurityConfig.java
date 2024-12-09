@@ -33,10 +33,11 @@ public class SecurityConfig {
         http
                 .csrf(c -> c.disable())
                 .authorizeHttpRequests(req -> req
-                        .requestMatchers("/user/create-user", "/user/login", "/images/error/**").permitAll()
+                        .requestMatchers("/user/create-user", "/user/login", "/images/error/**", "/images/general/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/user/login")
+                        .failureUrl("/user/login?error=true")
                         .defaultSuccessUrl("/user/info"));
                 // rest config
 //                    .csrf(c -> c.disable())

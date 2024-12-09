@@ -1,57 +1,81 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}" th:with="pageTitle='Create Company'">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Create A Company</title>
+    <title>Create a company</title>
 </head>
-<body>
-  <form th:action="@{|/companies/create/${userId}|}" method="post" th:object="${company}">
-    <div>
-      <label for="nameOfCompany">Company Name:</label>
-      <input type="text" id="nameOfCompany" th:field="*{nameOfCompany}" required>
-    </div>
+<body class="bg-light" th:fragment="content">
+  <div class="container mt-5">
+    <div class="card shadow-sm">
+      <div class="card-header bg-primary text-white">
+        <h2 class="h4 mb-0">Create A Company</h2>
+      </div>
+      <div class="card-body">
+        <form th:action="@{|/companies/create/${userId}|}" method="post" th:object="${company}">
 
-    <h3>Address</h3>
-    <div>
-      <label for="street">Street:</label>
-      <input type="text" id="street" th:field="*{address.streetName}" required>
-    </div>
-    <div>
-      <label for="houseNumber">House Number:</label>
-      <input type="number" id="houseNumber" th:field="*{address.houseNumber}" required>
-    </div>
-    <div>
-      <label for="busNumber">Bus Number (optional):</label>
-      <input type="number" id="busNumber" th:field="*{address.busNumber}">
-    </div>
-    <div>
-      <label for="city">City:</label>
-      <input type="text" id="city" th:field="*{address.city}" required>
-    </div>
-    <div>
-      <label for="postalCode">Postal Code:</label>
-      <input type="number" id="postalCode" th:field="*{address.postalCode}" required>
-    </div>
-    <div>
-      <label for="country">Country:</label>
-      <input type="text" id="country" th:field="*{address.country}" required>
-    </div>
+          <div class="mb-3">
+            <label for="nameOfCompany" class="form-label">Company name:</label>
+            <input type="text" id="nameOfCompany" th:field="*{nameOfCompany}" class="form-control" required>
+          </div>
 
-    <div>
-      <label for="industry">Industry:</label>
-      <select id="industry" th:field="*{industry}">
-        <option value="" disabled selected>Select Industry</option>
-        <option th:each="industry : ${industries}" th:value="${industry}" th:text="${industry}"></option>
-      </select>
-    </div>
+          <h3 class="h5 mt-4">Address</h3>
 
-    <div>
-      <label for="description">Description:</label>
-      <textarea id="description" th:field="*{description}" rows="4" cols="50" placeholder="Enter description of company (optional)"></textarea>
-    </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="street" class="form-label">Street:</label>
+              <input type="text" id="street" th:field="*{address.streetName}" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="houseNumber" class="form-label">House number:</label>
+              <input type="number" id="houseNumber" th:field="*{address.houseNumber}" class="form-control" required>
+            </div>
+          </div>
 
-    <button type="submit">Create Company</button>
-  </form>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="busNumber" class="form-label">Bus number (optional):</label>
+              <input type="number" id="busNumber" th:field="*{address.busNumber}" class="form-control">
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="city" class="form-label">City:</label>
+              <input type="text" id="city" th:field="*{address.city}" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="postalCode" class="form-label">Postal code:</label>
+              <input type="number" id="postalCode" th:field="*{address.postalCode}" class="form-control" required>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="country" class="form-label">Country:</label>
+              <input type="text" id="country" th:field="*{address.country}" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="industry" class="form-label">Industry:</label>
+            <select id="industry" th:field="*{industry}" class="form-select">
+              <option value="" disabled selected>Select Industry</option>
+              <option th:each="industry : ${industries}" th:value="${industry}" th:text="${industry}"></option>
+            </select>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-label">Description:</label>
+            <textarea id="description" th:field="*{description}" class="form-control" rows="4" placeholder="Enter description of company (optional)"></textarea>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="submit" class="btn btn-primary">Create Company</button>
+            <a href="/user/info" class="btn btn-outline-primary">Go Back</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+
 </body>
 </html>

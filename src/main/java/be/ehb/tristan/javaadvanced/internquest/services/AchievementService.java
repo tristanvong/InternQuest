@@ -4,14 +4,10 @@ import be.ehb.tristan.javaadvanced.internquest.enums.AchievementEnum;
 import be.ehb.tristan.javaadvanced.internquest.enums.Rarity;
 import be.ehb.tristan.javaadvanced.internquest.models.Achievement;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
-import be.ehb.tristan.javaadvanced.internquest.repositories.user.AchievementRepository;
-import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.AchievementRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
 @Service
 public class AchievementService {

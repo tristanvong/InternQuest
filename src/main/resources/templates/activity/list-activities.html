@@ -1,32 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}" th:with="pageTitle='List Activities'">
 <head>
     <meta charset="UTF-8">
     <title>List of User Activities</title>
 </head>
-<body>
-    <h1>Your activities</h1>
-    <ul>
-        <li th:each="activity : ${activities}">
-            <span th:text="${activity.activityName}">Activity name</span> -
-            <span th:text="${activity.activityDescription}">Activity description</span>
+<body class="bg-light" th:fragment="content">
 
-            <ul>
-                <li th:each="company : ${activity.companies}">
-                    <span th:text="${company.nameOfCompany}">Company name</span>
-                    (<span th:text="${company.industry}">Industry</span>)
-                    <span th:if="${company.description != null and !company.description.isEmpty()}" th:text="' - ' + ${company.description}"></span>
+    <div class="container mt-5">
+        <h1 class="mb-4">Your Activities</h1>
+
+        <div class="list-group">
+            <ul class="list-unstyled">
+                <li th:each="activity : ${activities}" class="mb-4">
+
+                    <div class="card shadow-sm">
+
+                        <div class="card-header">
+                            <h5 th:text="${activity.activityName}">Activity name</h5>
+                        </div>
+
+                        <div class="card-body">
+                            <p th:text="${activity.activityDescription}">Activity description</p>
+
+                            <h6>Companies:</h6>
+                            <ul class="list-group list-group-flush">
+                                <li th:each="company : ${activity.companies}" class="list-group-item">
+                                    <strong th:text="${company.nameOfCompany}">Company name</strong>
+                                    (<span th:text="${company.industry}">Industry</span>)
+                                    <span th:if="${company.description != null and !company.description.isEmpty()}" th:text="' - ' + ${company.description}"></span>
+                                </li>
+                            </ul>
+
+                            <h6 class="mt-3">Users:</h6>
+                            <ul class="list-inline">
+                                <li th:each="user : ${activity.users}" class="list-inline-item">
+                                    <a th:href="@{|/activities/update/${activity.id}|}" class="btn btn-sm btn-warning me-2">Update</a>
+                                    <a th:href="@{|/activities/delete/${activity.id}|}" class="btn btn-sm btn-danger">Delete</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
                 </li>
             </ul>
+        </div>
+    </div>
 
-            <ul>
-                <li th:each="user : ${activity.users}">
-                    <a th:href="@{|/activities/update/${activity.id}|}">Update</a>
-                    <a th:href="@{|/activities/delete/${activity.id}|}">Delete</a>
-                </li>
-            </ul>
-
-        </li>
-    </ul>
 </body>
 </html>

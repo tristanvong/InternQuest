@@ -1,61 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}" th:with="pageTitle='Edit Company'">
 <head>
     <meta charset="UTF-8">
-    <title>Edit Company Information</title>
+    <title th:fragment="title">Edit Company Information</title>
 </head>
-<body>
-    <form th:action="@{|/companies/edit/${company.id}|}" method="post" th:object="${company}">
-        <div>
-            <label for="nameOfCompany">Company name:</label>
-            <input type="text" id="nameOfCompany" th:field="*{nameOfCompany}" required>
-        </div>
+<body th:fragment="content" class="bg-light">
 
-        <h3>---Address---</h3>
-        <div>
-            <label for="streetName">Street name:</label>
-            <input type="text" id="streetName" th:field="*{address.streetName}" required>
-        </div>
+    <div class="container mt-5">
+        <div class="card shadow-sm">
 
-        <div>
-            <label for="houseNumber">House number:</label>
-            <input type="number" id="houseNumber" th:field="*{address.houseNumber}" required>
-        </div>
+            <div class="card-header bg-primary text-white">
+                <h2 class="h4 mb-0">Edit Company Information</h2>
+            </div>
 
-        <div>
-            <label for="busNumber">Bus number (optional): </label>
-            <input type="number" id="busNumber" th:field="*{address.busNumber}">
-        </div>
+            <div class="card-body">
+                <form th:action="@{|/companies/edit/${company.id}|}" method="post" th:object="${company}">
 
-        <div>
-            <label for="cityName">City:</label>
-            <input type="text" id="cityName" th:field="*{address.city}" required>
-        </div>
+                    <div class="mb-3">
+                        <label for="nameOfCompany" class="form-label">Company name:</label>
+                        <input type="text" id="nameOfCompany" th:field="*{nameOfCompany}" class="form-control" required>
+                    </div>
 
-        <div>
-            <label for="postalCode">Postal code:</label>
-            <input type="number" id="postalCode" th:field="*{address.postalCode}" required>
-        </div>
+                    <h3 class="h5 mt-4">Address</h3>
 
-        <div>
-            <label for="countryName">Country:</label>
-            <input type="text" id="countryName" th:field="*{address.country}" required>
-        </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="streetName" class="form-label">Street name:</label>
+                            <input type="text" id="streetName" th:field="*{address.streetName}" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="houseNumber" class="form-label">House number:</label>
+                            <input type="number" id="houseNumber" th:field="*{address.houseNumber}" class="form-control" required>
+                        </div>
+                    </div>
 
-        <div>
-            <label for="industry">Industry:</label>
-            <select id="industry" th:field="*{industry}">
-                <option value="" disabled>Select industry</option>
-                <option th:each="industry : ${industries}" th:value="${industry}" th:text="${industry}" th:selected="${industry == company.industry}"></option>
-            </select>
-        </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="busNumber" class="form-label">Bus number (optional):</label>
+                            <input type="number" id="busNumber" th:field="*{address.busNumber}" class="form-control">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="cityName" class="form-label">City:</label>
+                            <input type="text" id="cityName" th:field="*{address.city}" class="form-control" required>
+                        </div>
+                    </div>
 
-        <div>
-            <label for="description">Description:</label>
-            <textarea id="description" th:field="*{description}" rows="4" cols="50" placeholder="Enter description of company (optional)"></textarea>
-        </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="postalCode" class="form-label">Postal code:</label>
+                            <input type="number" id="postalCode" th:field="*{address.postalCode}" class="form-control" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="countryName" class="form-label">Country:</label>
+                            <input type="text" id="countryName" th:field="*{address.country}" class="form-control" required>
+                        </div>
+                    </div>
 
-        <button type="submit">Update company information</button>
-    </form>
+                    <div class="mb-3">
+                        <label for="industry" class="form-label">Industry:</label>
+                        <select id="industry" th:field="*{industry}" class="form-select">
+                            <option value="" disabled>Select industry</option>
+                            <option th:each="industry : ${industries}" th:value="${industry}" th:text="${industry}" th:selected="${industry == company.industry}"></option>
+                        </select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description:</label>
+                        <textarea id="description" th:field="*{description}" class="form-control" rows="4" placeholder="Enter description of company (optional)"></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <button type="submit" class="btn btn-primary">Update Company Information</button>
+                        <a href="/user/info" class="btn btn-outline-primary">Go Back</a>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

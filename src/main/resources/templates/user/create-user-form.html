@@ -1,77 +1,123 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}" th:with="pageTitle='Create User'">
 <head>
-    <title>Create User</title>
+    <title th:fragment="title">Create an account</title>
 </head>
-<body>
-<h1>Create User</h1>
-<form th:action="@{/user/create-user}" th:object="${user}" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" th:field="*{username}" required>
-    <div style="color: red" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</div>
-    <br>
+<body th:fragment="content" class="bg-light">
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" th:field="*{password}" required>
-    <div style="color: red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div>
-    <br>
+<div class="container mt-5">
+    <div class="card shadow-sm">
 
-    <label for="firstName">First Name:</label>
-    <input type="text" id="firstName" name="firstName" th:field="*{firstName}" required>
-    <div style="color: red" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Error</div>
-    <br>
+        <div class="card-header bg-primary text-white">
+            <h2 class="h4 mb-0">Create User</h2>
+        </div>
 
-    <label for="lastName">Last Name:</label>
-    <input type="text" id="lastName" name="lastName" th:field="*{lastName}" required>
-    <div style="color: red" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Error</div>
-    <br>
+        <div class="card-body">
+            <form th:action="@{/user/create-user}" th:object="${user}" method="post">
 
-    <label for="role" hidden="hidden">Role:</label>
-    <select hidden="hidden" id="role" name="role" th:field="*{role}" required>
-        <option th:value="${T(be.ehb.tristan.javaadvanced.internquest.enums.Role).REGULAR_USER}"></option>
-    </select>
-    <div style="color: red" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Error</div>
-    <br>
+                <div class="mb-3">
+                    <label for="username" class="form-label">Username:</label>
+                    <input type="text" id="username" name="username" th:field="*{username}" class="form-control" required>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Error</div>
+                </div>
 
-    <label for="description">Description:</label>
-    <textarea id="description" name="description" th:field="*{description}"></textarea>
-    <div style="color: red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Error</div>
-    <br>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password:</label>
+                    <input type="password" id="password" name="password" th:field="*{password}" class="form-control" required>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Error</div>
+                </div>
 
-    <fieldset>
-        <legend>Address</legend>
+                <div class="mb-3">
+                    <label for="firstName" class="form-label">First name:</label>
+                    <input type="text" id="firstName" name="firstName" th:field="*{firstName}" class="form-control" required>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></div>
+                </div>
 
-        <label for="address.streetName">Street:</label>
-        <input type="text" id="address.streetName" name="address.streetName" th:field="*{address.streetName}">
-        <div style="color: red" th:if="${#fields.hasErrors('address.streetName')}" th:errors="*{address.streetName}">Error</div>
-        <br>
+                <div class="mb-3">
+                    <label for="lastName" class="form-label">Last name:</label>
+                    <input type="text" id="lastName" name="lastName" th:field="*{lastName}" class="form-control" required>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></div>
+                </div>
 
-        <label for="address.houseNumber">House Number:</label>
-        <input type="number" id="address.houseNumber" name="address.houseNumber" th:field="*{address.houseNumber}">
-        <div style="color: red" th:if="${#fields.hasErrors('address.houseNumber')}" th:errors="*{address.houseNumber}" >Error</div>
-        <br>
+                <div class="mb-3 d-none">
+                    <label for="role" class="form-label">Role:</label>
+                    <select id="role" name="role" th:field="*{role}" class="form-select" required>
+                        <option th:value="${T(be.ehb.tristan.javaadvanced.internquest.enums.Role).REGULAR_USER}"></option>
+                    </select>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('role')}" th:errors="*{role}">Error</div>
+                </div>
 
-        <label for="address.busNumber">Bus Number (Optional):</label>
-        <input type="number" id="address.busNumber" name="address.busNumber" th:field="*{address.busNumber}">
-        <div style="color: red" th:if="${#fields.hasErrors('address.busNumber')}" th:errors="*{address.busNumber}">Error</div>
-        <br>
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description:</label>
+                    <textarea id="description" name="description" th:field="*{description}" class="form-control"></textarea>
+                    <div class="text-danger small" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Error</div>
+                </div>
 
-        <label for="address.postalCode">Postal Code:</label>
-        <input type="number" maxlength="4" max="9999" id="address.postalCode" name="address.postalCode" th:field="*{address.postalCode}">
-        <div style="color: red" th:if="${#fields.hasErrors('address.postalCode')}" th:errors="*{address.postalCode}">Error</div>
-        <br>
+                <fieldset class="border p-3 rounded mb-4">
+                    <legend class="w-auto px-2">Address (optional)</legend>
 
-        <label for="address.city">City:</label>
-        <input type="text" id="address.city" name="address.city" th:field="*{address.city}">
-        <div style="color: red" th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}">Error</div>
-        <br>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address.streetName" class="form-label">Street:</label>
+                                <input type="text" id="address.streetName" name="address.streetName" th:field="*{address.streetName}" class="form-control">
+                                <div class="text-danger small" th:if="${#fields.hasErrors('address.streetName')}" th:errors="*{address.streetName}">Error</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address.houseNumber" class="form-label">House number:</label>
+                                <input type="number" id="address.houseNumber" name="address.houseNumber" th:field="*{address.houseNumber}" class="form-control">
+                                <div class="text-danger small" th:if="${#fields.hasErrors('address.houseNumber')}" th:errors="*{address.houseNumber}">Error</div>
+                            </div>
+                        </div>
+                    </div>
 
-        <label for="address.country">Country:</label>
-        <input type="text" id="address.country" name="address.country" th:field="*{address.country}">
-        <div style="color: red" th:if="${#fields.hasErrors('address.country')}" th:errors="*{address.country}">Error</div>
-        <br>
-    </fieldset>
-    <button type="submit">Create User</button>
-</form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address.busNumber" class="form-label">Bus number (Optional):</label>
+                                <input type="number" id="address.busNumber" name="address.busNumber" th:field="*{address.busNumber}" class="form-control">
+                                <div class="text-danger small" th:if="${#fields.hasErrors('address.busNumber')}" th:errors="*{address.busNumber}">Error</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address.postalCode" class="form-label">Postal code:</label>
+                                <input type="number" maxlength="4" max="9999" id="address.postalCode" name="address.postalCode" th:field="*{address.postalCode}" class="form-control">
+                                <div class="text-danger small" th:if="${#fields.hasErrors('address.postalCode')}" th:errors="*{address.postalCode}">Error</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address.city" class="form-label">City:</label>
+                                <input type="text" id="address.city" name="address.city" th:field="*{address.city}" class="form-control">
+                                <div class="text-danger small" th:if="${#fields.hasErrors('address.city')}" th:errors="*{address.city}">Error</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="address.country" class="form-label">Country:</label>
+                                <input type="text" id="address.country" name="address.country" th:field="*{address.country}" class="form-control">
+                                <div class="text-danger small" th:if="${#fields.hasErrors('address.country')}" th:errors="*{address.country}">Error</div>
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
+
+                <div class="d-flex justify-content-between">
+                    <button type="submit" class="btn btn-primary">Create User</button>
+                    <a href="/user/login" class="btn btn-outline-primary">Go Back</a>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

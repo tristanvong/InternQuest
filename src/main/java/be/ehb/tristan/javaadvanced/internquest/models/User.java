@@ -21,6 +21,7 @@ public class User {
 
     @Column(nullable = false)
     //@Size(min = 8, max = 32, message = "Password needs to be between 8 and 32 characters long.")
+    @Size(min = 8, message = "Password needs to be at least 8 characters long.")
     private String password;
 
     @Column(nullable = false)
@@ -39,9 +40,6 @@ public class User {
 
     @Column(nullable = true)
     private String description;
-
-    @Column(nullable = true)
-    private String profilePicturePath;
 
     @OneToOne(optional = true, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
@@ -149,14 +147,6 @@ public class User {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public String getProfilePicturePath() {
-        return profilePicturePath;
-    }
-
-    public void setProfilePicturePath(String profilePicturePath) {
-        this.profilePicturePath = profilePicturePath;
     }
 
     public Address getAddress() {

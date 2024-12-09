@@ -12,6 +12,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @Controller
 @RequestMapping("/user")
@@ -110,5 +114,16 @@ public class UserController {
             throw new RuntimeException(e);
         }
         return "redirect:/user/login";
+    }
+    @GetMapping("user-details")
+    public String showUserDetails(Model model, Authentication authentication) {
+        String username = authentication.getName();
+        User user = userService.getUserByUsername(username);
+        if(user == null) {
+            throw new RuntimeException("You are not authorized to access this page!");
+        }
+
+        model.addAttribute("user", user);
+        return "user/user";
     }
 }

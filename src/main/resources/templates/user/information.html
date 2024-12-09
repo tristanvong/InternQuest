@@ -1,23 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}" th:with="pageTitle='Information Page'">
 <head>
   <meta charset="UTF-8">
-  <title>Information Page</title>
+  <title th:fragment="title">Information Page</title>
 </head>
-<body>
-<h1>Welcome back: <span th:text="'@'+${username}"></span></h1>
-<h2>--- Company Section ---</h2>
-<span><a href="/companies/create">Create a company!</a></span>
-<span><a href="/companies/list">See company list</a></span>
+<body th:fragment="content" class="bg-light">
 
-<h2>--- Activity Section ---</h2>
-<span><a href="/activities/create">Create an activity!</a></span>
-<span><a href="/activities/list">See activity list</a></span>
+<div class="container mt-5">
 
-<h2>--- Achievement Section ---</h2>
-<span><a href="/achievements/list">See your achievements!</a></span><br>
-<span><a href="/achievements/check/made-account">Click to see if you have the "Made an Account" achievement!</a></span><br>
-<span><a href="/achievements/check/created-company">Click to see if you have the "Created a Company" achievement!</a></span>
+  <h1 class="display-4 text-center">Welcome back: <span th:text="'@'+${username}"></span>!</h1>
 
+  <div class="mt-4">
+    <h2 class="text-primary">--- Account Section ---</h2>
+    <div class="d-flex gap-3">
+      <a href="/user/edit-account" class="btn btn-primary">Edit Account</a>
+      <a href="/user/user-details" class="btn btn-info">View Account Details</a>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <h2 class="text-primary">--- Company Section ---</h2>
+    <div class="d-flex gap-3">
+      <a href="/companies/create" class="btn btn-primary w-100">Create a company</a>
+      <a href="/companies/list" class="btn btn-info w-100">See company list</a>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <h2 class="text-primary">--- Activity Section ---</h2>
+    <div class="d-flex flex-column gap-2">
+      <a href="/activities/create" class="btn btn-primary w-100">Create an activity</a>
+      <a href="/activities/list" class="btn btn-info w-100">See activity list</a>
+    </div>
+  </div>
+
+  <div class="mt-4">
+    <h2 class="text-primary">--- Achievement Section ---</h2>
+    <div class="d-flex flex-column gap-2">
+      <a href="/achievements/list" class="btn btn-primary w-100">See your achievements</a>
+      <a href="/achievements/check/made-account" class="btn btn-info w-100">Check "Made an Account" achievement</a>
+      <a href="/achievements/check/created-company" class="btn btn-info w-100">Check "Created a Company" achievement</a>
+    </div>
+  </div>
+</div>
 </body>
 </html>

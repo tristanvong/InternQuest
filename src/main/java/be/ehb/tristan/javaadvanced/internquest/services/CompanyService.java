@@ -3,9 +3,9 @@ package be.ehb.tristan.javaadvanced.internquest.services;
 import be.ehb.tristan.javaadvanced.internquest.enums.Industry;
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
-import be.ehb.tristan.javaadvanced.internquest.repositories.user.ActivityRepository;
-import be.ehb.tristan.javaadvanced.internquest.repositories.user.CompanyRepository;
-import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.ActivityRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.CompanyRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

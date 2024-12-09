@@ -1,4 +1,4 @@
-package be.ehb.tristan.javaadvanced.internquest.repositories.user;
+package be.ehb.tristan.javaadvanced.internquest.repositories;
 
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import org.springframework.data.jpa.repository.JpaRepository;

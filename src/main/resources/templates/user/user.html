@@ -1,22 +1,35 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/layout}" th:with="pageTitle='User Details'">
 <head>
-    <title>User Details</title>
+    <title th:fragment="title">User Details</title>
 </head>
-<body>
-<h1>User Details</h1>
-<!-- work in progress -->
-<p th:text="'Username: ' + ${user.username}"></p>
-<p th:text="'First name: ' + ${user.firstName}"></p>
-<p th:text="'Last name: ' + ${user.lastName}"></p>
-<p th:text="'Role: ' + ${user.role}"></p>
+<body class="bg-light d-flex flex-column min-vh-100" th:fragment="content">
 
-<p th:if="${user.description != null and user.description.trim() != ''}" th:text="'Description: ' + ${user.description}" th:id="description"></p>
-<p th:if="${user.profilePicturePath != null}" th:text="'Profile picture: ' + ${user.profilePicturePath}"></p>
-<div th:if="${user.address.houseNumber != 0 || user.address.streetName == '' || user.address.city == '' }" th:id="address">
-    <p th:text="'Street: ' + ${user.address.streetName}" th:id="streetName"></p>
-    <p th:text="'House number: ' + ${user.address.houseNumber}" th:id="houseNumber"></p>
-    <p th:text="'Postal code: ' + ${user.address.postalCode}" th:id="postalCode"></p>
-</div>
+    <div class="container mt-5">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h1>User Details</h1>
+            </div>
+            <div class="card-body">
+                <p><strong>Username:</strong> <span th:text="${user.username}"></span></p>
+                <p><strong>First name:</strong> <span th:text="${user.firstName}"></span></p>
+                <p><strong>Last name:</strong> <span th:text="${user.lastName}"></span></p>
+
+                <div th:if="${user.description != null and user.description.trim() != ''}">
+                    <p><strong>Description:</strong> <span th:text="${user.description}"></span></p>
+                </div>
+
+                <div th:if="${user.address.houseNumber != 0 or user.address.streetName != '' or user.address.city != ''}">
+                    <p><strong>Street:</strong> <span th:text="${user.address.streetName}"></span></p>
+                    <p><strong>House number:</strong> <span th:text="${user.address.houseNumber}"></span></p>
+                    <p><strong>Postal code:</strong> <span th:text="${user.address.postalCode}"></span></p>
+                    <p><strong>City:</strong> <span th:text="${user.address.city}"></span></p>
+                    <p><strong>Country:</strong> <span th:text="${user.address.country}"></span></p>
+                </div>
+                <a href="/user/info" class="btn btn-outline-primary mt-3">Go back</a>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -7,10 +7,10 @@ import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByIdGivenE
 import be.ehb.tristan.javaadvanced.internquest.exceptions.UserNotFoundByUsernameGivenException;
 import be.ehb.tristan.javaadvanced.internquest.models.Company;
 import be.ehb.tristan.javaadvanced.internquest.models.User;
-import be.ehb.tristan.javaadvanced.internquest.repositories.user.AchievementRepository;
-import be.ehb.tristan.javaadvanced.internquest.repositories.user.ActivityRepository;
-import be.ehb.tristan.javaadvanced.internquest.repositories.user.CompanyRepository;
-import be.ehb.tristan.javaadvanced.internquest.repositories.user.UserRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.AchievementRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.ActivityRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.CompanyRepository;
+import be.ehb.tristan.javaadvanced.internquest.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,7 +20,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class UserService {
