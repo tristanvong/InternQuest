@@ -1,6 +1,7 @@
 package be.ehb.tristan.javaadvanced.internquest.services;
 
 import be.ehb.tristan.javaadvanced.internquest.exceptions.ActivityNotFoundByIdException;
+import be.ehb.tristan.javaadvanced.internquest.exceptions.FormValueIncorrectException;
 import be.ehb.tristan.javaadvanced.internquest.models.Activity;
 import be.ehb.tristan.javaadvanced.internquest.repositories.ActivityRepository;
 import be.ehb.tristan.javaadvanced.internquest.repositories.CompanyRepository;
@@ -8,6 +9,7 @@ import be.ehb.tristan.javaadvanced.internquest.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -51,5 +53,23 @@ public class ActivityService {
         companyRepository.flush();
         activityRepository.flush();
         activityRepository.delete(activity);
+    }
+
+    public void validateActivityAddress(Activity activity) {
+        if(activity.getActivityStartDate() == null || activity.getActivityDeadline() == null) {
+            throw new FormValueIncorrectException("Start date and deadline for activity must be provided.");
+        }
+
+        if(activity.getActivityStartDate().isAfter(activity.getActivityDeadline())) {
+            throw new FormValueIncorrectException("Start date cannot be before deadline.");
+        }
+
+        if(activity.getActivityStartDate().isBefore(LocalDate.now())){
+            throw new FormValueIncorrectException("Start date cannot in the past.");
+        }
+
+        if(activity.getActivityDeadline().isBefore(activity.getActivityStartDate())) {
+            throw new FormValueIncorrectException("Deadline cannot be before start date.");
+        }
     }
 }

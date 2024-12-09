@@ -82,7 +82,7 @@ public class UserService {
         if (authentication.isAuthenticated()){
             return jwtService.generateToken(user.getUsername());
         }
-        return "Invalid username or password";//TODO exception voor maken
+        return "Invalid username or password";
 
     }
 

@@ -68,6 +68,8 @@ public class ActivityController {
             throw new UnauthorizedAccessException("Company with id: " + companyId + " not found.");
         }
 
+        activityService.validateActivityAddress(activity);
+
         activity.getCompanies().add(company);
         activityService.saveActivity(activity);
 

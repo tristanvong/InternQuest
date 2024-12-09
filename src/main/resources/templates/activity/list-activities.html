@@ -20,7 +20,11 @@
                         </div>
 
                         <div class="card-body">
-                            <p th:text="${activity.activityDescription}">Activity description</p>
+
+                            <p th:if="${activity.activityDescription != null and !activity.activityDescription.isEmpty()}" th:text="'Activity description: ' + ${activity.activityDescription}"></p>
+                            <p th:text="'Activity start date: '+${activity.activityStartDate}">Activity start date</p>
+                            <p th:text="'Activity deadline: '+${activity.activityDeadline}">Activity deadline</p>
+
 
                             <h6>Companies:</h6>
                             <ul class="list-group list-group-flush">
@@ -31,7 +35,6 @@
                                 </li>
                             </ul>
 
-                            <h6 class="mt-3">Users:</h6>
                             <ul class="list-inline">
                                 <li th:each="user : ${activity.users}" class="list-inline-item">
                                     <a th:href="@{|/activities/update/${activity.id}|}" class="btn btn-sm btn-warning me-2">Update</a>
