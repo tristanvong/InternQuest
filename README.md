@@ -2,7 +2,7 @@
 
 **InternQuest**: a web application where users can track their internship progress through "activities" within companies, helping them stay motivated as they work towards securing their internship. This project uses the **Spring Framework** for backend development, offering a seamless platform to manage user profiles, company activities, and achievements, all aimed at boosting the internship experience.
 
-## 📋 Brief Summary
+## Brief Summary
 
 InternQuest is a platform designed for users to manage and track their progress within an organization. The application allows users to:
 
